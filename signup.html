@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">    
+	<title>Sign up for " " Cinema</title>
+	<script>   
+        function passchecker(){
+        var str = document.getElementById("password").value;
+        var regularExpression = /^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)[0-9a-zA-Z]*$/;
+        if(str.length>8){
+            document.getElementById("r1").style = "color : lightgreen";
+            if(regularExpression.test(str)){
+                document.getElementById("r2").style = "color : lightgreen";
+                if(/[a-z]/.test(str) && /[A-Z]/.test(str)){
+                    document.getElementById("r3").style = "color : lightgreen";
+                }else{
+                    document.getElementById("password").style.border = "solid red";
+                    alert("The password is not valid, please refil the password");
+                    document.getElementById("password").value = "";
+                    changeColor();
+                }
+            }else{
+                document.getElementById("password").style.border = "solid red";
+                    alert("The password is not valid, please refil the password");
+                    document.getElementById("password").value = "";
+                    changeColor();
+            }
+        }else{
+            document.getElementById("password").style.border = "solid red";
+                    alert("The password is not valid, please refil the password");
+                    document.getElementById("password").value = "";
+                   changeColor();
+        }
+        }
+
+        function changeColor(){
+            var block = document.getElementsByClassName('rules');
+            for (var i = 0; i < block.length; i++) {
+                block[i].style= "color: red";
+            }
+        }
+
+       
+        /*if (str.length() < 8)
+    	return false;
+    	int charcount = 0;
+    	int numcount = 0;
+    	for(int i = 0; i<str.length(); i++){
+        	char c = str.charAt(i);
+        	if(charcheck(c))
+            	charcount++;
+        	else if(numcheck(c))
+            	numcount++;
+        	else
+            	return false;
+    	}
+    	return (charcount>0 && numcount>0);
+    	}
+    	function charcheck(char c){
+        	c = Character.toUpperCase(c);
+        	return(c>='A'&& c<='Z');
+    	}
+    	function numcheck(char c){
+        	return(c>='0'&& c<='9');
+    	}*/
+        
+        function comparepass(){
+        var pass1 = document.getElementById("password");
+        var pass2 = document.getElementById("cpassword");
+        if(pass2.value != pass1.value){
+        document.getElementById("cpassword").style.border = "solid red";
+        alert("The password is not the same, please refil the password");
+        document.getElementById("cpassword").value = "";
+        }
+        else
+        document.getElementById("cpassword").style.border = "";
+        }
+        function activeSignUP(){
+    		var sbmt = document.getElementById("cb");
+    		if (sbmt.checked == true)
+    		{
+        		su.disabled = false;
+    		}
+    		else
+    		{
+        		su.disabled = true;
+    		}
+        }
+    </script>    
+	<style>
+        .my-input-row{
+            margin: 10px;
+        }
+        #su{
+        	margin: 10px;            
+        }
+        #pr{
+        	border: solid red;
+        	margin-left: 10px;
+            width: 320px;
+        }
+        #r{
+        	margin-left: 10px;
+        }
+        #a1{
+        	margin: 10px;
+        }
+        #a2{
+        	margin: 23px;
+            color: red;
+        }
+        input[type=email]:hover {
+            border: solid black;
+        }
+        input[type=password]:hover {
+            border: solid black;
+        }
+        input[type=text]:hover {
+            border: solid black;
+        }
+        input[type=submit]:active {
+  			 box-shadow: 0 5px gray;
+		}
+        input[type=submit]:hover {
+        	background-color: red;
+        	color: black;
+            border: solid black;
+        }
+        .rules{
+            color: red;
+        }
+	</style>    
+</head>
+
+<body>	
+    <header>
+		<h1><b>Welcome to " " cinema<b></h1>
+        <h2>Fill in the details to Sign up</h2>
+    </header>    
+        <div class="noBorder">
+            <form method="post">         
+                <div id= "em" class="my-input-row">
+                    <label class="my-label" for="number-one">E-mail: </label><br>
+                    <input id="email" class="my-input" type="email" required placeholder="Example: abc@email.com"/>
+                </div>      
+                <div id="p" class="my-input-row">
+                    <label class="my-label" for="number-two">Password:</label><br>
+                    <input id="password" class="my-input" type="password" required onchange="javascript:passchecker();"/>
+                </div>      
+                <div id="pr">
+                <p>Password must contain:</p>
+                <p id="r1" class="rules">1. At least 8 characters </p>
+                <p id="r2" class="rules">2. Include both numbers and letters</p>
+                <p id="r3" class="rules">3. Include both lower and upper case letters</p>
+                </div>       
+                <div id="cp" class="my-input-row">
+                    <label class="my-label" for="string">Confirm Password:</label><br>
+                    <input id="cpassword" class="my-input" type="password" required onchange="javascript:comparepass();"/>
+                </div>             
+                <div id="mn" class="my-input-row">
+                    <label class="my-label" for="string">Mobile Number:</label><br>
+                    <input id="mobileno" class="my-input" type="text" required placeholder="Example: 012-345 6789"/>           
+                </div>               
+                <div id="a1">
+                	<input id="cb" type="checkbox" name="agreement" onclick = "activeSignUP()">
+                    <label> I certify that I am 18 years of age or older and I agreed to the Terms & Conditions and Privacy Policy</label><br>
+					<lable id="a2">Please accept the terms and conditions to proceed. </label><br>
+                </div>             
+                <div class="my-input-row">
+                	<input id="su" class="my-input" type="submit" value="Sign UP" disabled />
+                </div>
+</body>
+</html>
