@@ -1,4 +1,4 @@
-<?php;
+<?php
 
 $username = filter_input(INPUT_POST, 'username');
 $email = filter_input(INPUT_POST, 'email');

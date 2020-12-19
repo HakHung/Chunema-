@@ -9,7 +9,7 @@
         function passchecker() {
             var str = document.getElementById("password").value;
             var regularExpression = /^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)[0-9a-zA-Z]*$/;
-            if (str.length > 8) {
+            if (str.length >= 8) {
                 document.getElementById("r1").style = "color : lightgreen";
                 if (regularExpression.test(str)) {
                     document.getElementById("r2").style = "color : lightgreen";
@@ -122,7 +122,7 @@
 <body>
     <form method="post" action="server.php">
         <header>
-            <h1><b>Welcome to " " cinema<b></h1>
+            <h1><b>Welcome to Chunema<b></h1>
             <h2>Fill in the details to Sign up</h2>
         </header>
         <div class="noBorder">
@@ -157,8 +157,7 @@
                 <lable id="a2">Please accept the terms and conditions to proceed. </label><br>
             </div>
             <div class="my-input-row">
-                <!-- <input id="su" class="my-input" type="submit" value="Sign UP" disabled /> -->
-                <button type='submit' class='btn btn-primary'>Save Changes</button>
+                <button type='submit' class='btn btn-primary'>Sign Up</button>
             </div>
     </form>
 </body>
