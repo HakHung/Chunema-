@@ -22,30 +22,31 @@
 
 	<script>
 		function passchecker() {
-			var str = document.getElementById("spassword").value;
+			var str = document.getElementById("password").value;
 			var regularExpression = /^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)[0-9a-zA-Z]*$/;
 			if (str.length >= 8) {
 				document.getElementById("r1").style = "color : lightgreen";
+				document.getElementById("password").style.border = "";
 				if (regularExpression.test(str)) {
 					document.getElementById("r2").style = "color : lightgreen";
 					if (/[a-z]/.test(str) && /[A-Z]/.test(str)) {
 						document.getElementById("r3").style = "color : lightgreen";
 					} else {
-						document.getElementById("spassword").style.border = "solid red";
+						document.getElementById("password").style.border = "solid red";
 						alert("The password is not valid, please refil the password");
-						document.getElementById("spassword").value = "";
+						document.getElementById("password").value = "";
 						changeColor();
 					}
 				} else {
-					document.getElementById("spassword").style.border = "solid red";
+					document.getElementById("password").style.border = "solid red";
 					alert("The password is not valid, please refil the password");
-					document.getElementById("spassword").value = "";
+					document.getElementById("password").value = "";
 					changeColor();
 				}
 			} else {
-				document.getElementById("spassword").style.border = "solid red";
+				document.getElementById("password").style.border = "solid red";
 				alert("The password is not valid, please refil the password");
-				document.getElementById("spassword").value = "";
+				document.getElementById("password").value = "";
 				changeColor();
 			}
 		}
@@ -56,7 +57,7 @@
 			}
 		}
 		function comparepass() {
-			var pass1 = document.getElementById("spassword");
+			var pass1 = document.getElementById("password");
 			var pass2 = document.getElementById("repassword");
 			if (pass2.value != pass1.value) {
 				document.getElementById("repassword").style.border = "solid red";
@@ -130,7 +131,7 @@
 				<div class="row">
 					<label for="password">
 						Password:
-						<input type="password" name="password" id="spassword" placeholder="" required="required"
+						<input type="password" name="password" id="password" placeholder="" required="required"
 							onchange="javascript:passchecker();" />
 					</label>
 				</div>
