@@ -1,4 +1,4 @@
-<?php;
+<?php
 
 $username = filter_input(INPUT_POST, 'username');
 $email = filter_input(INPUT_POST, 'email');
@@ -19,26 +19,26 @@ if (mysqli_connect_error()) {
 }
   // first check the database to make sure 
   // a user does not already exist with the same username and/or email
-  $user_check_query = "SELECT * FROM userdetails WHERE username='$username' OR email='$email' LIMIT 1";
-  $result = mysqli_query($db, $user_check_query);
-  $user = mysqli_fetch_assoc($result);
-  if ($password != $repassword) {
-	array_push($errors, "The two passwords do not match");
-  }
-  echo $user;
-  if ($user) { // if user exists
-    if ($user['username'] === $username) {
-      array_push($errors, "Username already exists");
+  $sql="select * from userdetails where username='$username' or email='$email'";
+  $res=mysqli_query($conn,$sql);
+  if (mysqli_num_rows($res) > 0) {
+  // output data of each row
+    $row = mysqli_fetch_assoc($res);
+    if ($username==$row['username'])
+    {
+      echo "Username already exists";
     }
-
-    if ($user['email'] === $email) {
-      array_push($errors, "email already exists");
-    }
-  }
+    else if($email==$row['email'])
+    {
+      echo "Email already exists";
+    
+  }else{
     $sql = "INSERT INTO userdetails (username, email, password) values ('$username','$email', '$password')";
     if ($conn->query($sql)) {
         echo "New record is inserted sucessfully";
     } else {
         "Error: " . $sql . "<br>" . $conn->error;
     }   
-    // include 'dashboard.html';
+    include 'dashboard.html';
+  }
+  }
