@@ -2,7 +2,6 @@
 
 $username = filter_input(INPUT_POST, 'username');
 $email = filter_input(INPUT_POST, 'email');
-$password = filter_input(INPUT_POST, 'password');
 $repassword = filter_input(INPUT_POST, 'repassword');
 $errors = array();
 
@@ -25,16 +24,21 @@ if (mysqli_num_rows($res) > 0) {
   // output data of each row
   $row = mysqli_fetch_assoc($res);
   if ($username == $row['username']) {
-    echo "Username already exists";
+    $message = "Username already exists";
   } else if ($email == $row['email']) {
-    echo "Email already exists";
+    $message = "Email already exists";
   }
 } else {
-  $sql = "INSERT INTO userdetails (username, email, password) values ('$username','$email', '$password')";
-  if ($conn->query($sql)) {
-    echo "New record is inserted sucessfully";
+  $result = "INSERT INTO userdetails (username, email, pasword) values ('$username','$email', '$repassword')";
+  if ($conn->query($result)) {
+  $message = "New record is inserted sucessfully";
   } else {
-    "Error: " . $sql . "<br>" . $conn->error;
+    "Error: " . $result . "<br>" . $conn->error;
   }
-  include 'dashboard.html';
 }
+  //header('Location: dashboard.html');
+  //exit;
+  //include 'dashboard.html';
+  //echo "<script>";
+echo " <script>alert('$message');window.location.href='dashboard.html';
+</script>";
