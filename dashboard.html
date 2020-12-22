@@ -22,7 +22,7 @@
 
 	<script>
 		function passchecker() {
-			var str = document.getElementById("password").value;
+			var str = document.getElementById("spassword").value;
 			var regularExpression = /^([0-9]+[a-zA-Z]+|[a-zA-Z]+[0-9]+)[0-9a-zA-Z]*$/;
 			if (str.length >= 8) {
 				document.getElementById("r1").style = "color : lightgreen";
@@ -57,7 +57,7 @@
 			}
 		}
 		function comparepass() {
-			var pass1 = document.getElementById("password");
+			var pass1 = document.getElementById("spassword");
 			var pass2 = document.getElementById("repassword");
 			if (pass2.value != pass1.value) {
 				document.getElementById("repassword").style.border = "solid red";
@@ -131,14 +131,14 @@
 				<div class="row">
 					<label for="password">
 						Password:
-						<input type="password" name="password" id="password" placeholder="" required="required"
+						<input type="password" name="password" id="spassword" placeholder="" required="required"
 							onchange="javascript:passchecker();" />
 					</label>
 				</div>
 				<div class="row">
 					<label for="repassword">
 						re-type Password:
-						<input type="password" name="password" id="repassword" placeholder="" required="required"
+						<input type="password" name="repassword" id="repassword" placeholder="" required="required"
 							onchange="javascript:comparepass();" />
 					</label>
 				</div>
@@ -170,7 +170,7 @@
 							<span></span>
 						</div>
 				    </div>
-				    <a href="index-2.html"><img class="logo" src="images/logo1.png" alt="" width="200" height="90"></a>
+				    <a href="dashboard.html"><img class="logo" src="images/logo1.png" alt="" width="200" height="90"></a>
 			    </div>
 
 				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
@@ -178,7 +178,6 @@
 						<li class="hidden">
 							<a href="#page-top"></a>
 						</li>
-				
 					</ul>
 					<ul class="nav navbar-nav flex-child-menu menu-right">
 						<li class="dropdown first">
@@ -377,8 +376,6 @@
 					    <div>
 					    	<iframe class="item-video" src="#" data-src="https://www.youtube.com/embed/NxhEZG0k9_w"></iframe>
 					    </div>
-						
-						
 					</div>
 					<div class="slider-nav-2 thumb-ft">
 						<div class="item">
