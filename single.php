@@ -95,7 +95,7 @@ require_once "config.php";
         p{
             color: white;
         }
-        h4{
+        #d h4{
             color:yellow;
         }
         .inner a:hover{
@@ -159,7 +159,7 @@ require_once "config.php";
                 <li class="inner" style="font-size:large;"><a href="ticket.php">Book Now!</a></li>
             </div>
 
-            <div class="col-md-8 col-sm-12 col-xs-12">
+            <div id="d" class="col-md-8 col-sm-12 col-xs-12">
             <?php
                     echo "<h1>".$row['moviename']. "</h1>". "<br />\n";
                     echo "<p>".$row['description']."</p>"."<br />\n";
