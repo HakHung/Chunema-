@@ -1,10 +1,6 @@
 <?php
-                //create connection
-                $host = "localhost";
-                $dbusername = "root";
-                $dbpassword = "";
-                $dbname = "cinema";
-                $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+              require_once "config.php";
+
 
                 //submit form
                 if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -16,44 +12,72 @@
                     $items = preg_split("/[\s,]+/" ,$seat_id_list);
                     $price = (float)filter_input(INPUT_POST, 'price');
                     $date = date("Y/m/d");
-                  
+                  }
                   //insert new row data to payment table
-                    $stmt = "INSERT INTO payment(user_id, date, price, purchase) values ('1','$date', '$price','0')";
-                    if ($conn->query($stmt)) {
-                        $message = "New record is inserted sucessfully";
-                        } else {
-                          "Error: " . $stmt . "<br>" . $conn->error;
-                        }
-                    }
-                    $payment_id = mysqli_insert_id($conn);
-                    
+                    $sql = "INSERT INTO payment(user_id, date, price, purchase) VALUES ('1', :date, :price,'0')";
+
+
+                  if ($stmt = $pdo->prepare($sql)) {
+                  // Bind variables to the prepared statement as parameters
+                  $stmt->bindParam(":date", $param_date, PDO::PARAM_STR);
+                  $stmt->bindParam(":price", $param_price, PDO::PARAM_STR);
+           
+                  
+                  // Set parameters
+                  $param_date = $date;
+                  $param_price = $price;
+                  
+
+                  if ($stmt->execute()) {
+                    // Redirect to login page
+                    echo "Result updated";
+                    $payment_id = $pdo->lastInsertId();
+                  } else {
+                    echo "Something went wrong. Please try again later.";
+                  }
+                  }
+
+                  
+                  echo $payment_id;
 
                     //insert new data into seat_reserved table
                     foreach($items as $item){
                       echo $item;
                       $sql = "SELECT seat_id FROM seat WHERE seat_no = '$item' and screening_id= '1'";
-                      $result = $conn->query($sql);
+                      $stmt = $pdo->prepare($sql);
+                      $stmt ->execute();
                       
-                      if ($result->num_rows > 0){
-                        while($row = $result->fetch_assoc()) {
                       
-                          $stmt_1 = "INSERT INTO seat_reserved(seat_id, screening_id, payment_id) values ('{$row['seat_id']}','1', '$payment_id')";
-                          if ($conn->query($stmt_1)) {
-                            $message = "New record is inserted sucessfully";
+                        while ($row = $stmt->fetch())  {
+                      
+                          $sql_1 = "INSERT INTO seat_reserved(seat_id, screening_id, payment_id) VALUES ( :seat_id ,'1', :payment_id)";
+                          if($stmt_1 = $pdo->prepare($sql_1)){
+                            // Bind variables to the prepared statement as parameters
+                            $stmt_1->bindParam(":seat_id", $param_item, PDO::PARAM_STR);
+                            $stmt_1->bindParam(":payment_id", $param_payment_id, PDO::PARAM_STR);
+                    
+                            
+                            // Set parameters
+                            $param_item = $row['seat_id'];
+                            $param_payment_id = $payment_id;
+
+                            if ($stmt_1->execute()) {
+                              
+                              echo "Result updated";
+                              
                             } else {
-                              "Error: " . $stmt . "<br>" . $conn->error;
+                              echo "Something went wrong. Please try again later.";
                             }
+                          }
                     
                         }
-                      } else {
-                        echo "0 results";
-                      }
+                      
                      
                     }
                   
                 }
 
-                header('Location: cart.html');
-                $conn->close();
-                exit();
+                // header('Location: cart.html');
+                // $conn->close();
+                // exit();
             ?>

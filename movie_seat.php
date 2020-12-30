@@ -1,3 +1,15 @@
+
+<?php
+// Initialize the session
+session_start();
+
+
+// Include config file
+require_once "config.php";
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -141,77 +153,56 @@ body {
             <form method="post" action="seat_selection.php">
             <?php
 
-              //create connection
-              $host = "localhost";
-              $dbusername = "root";
-              $dbpassword = "";
-              $dbname = "cinema";
-              $conn = new mysqli($host, $dbusername, $dbpassword, $dbname);
+             
+                    $stmt_1 = $pdo->prepare("SELECT * FROM seat WHERE screening_id =1");
+                    $stmt_1 ->execute();
+                    
+                   
+                    $number_row  = $stmt_1->rowCount();
+                    $counter = 1;
+                    while ($row_1 = $stmt_1->fetch()) {
+                      $stmt_2 = $pdo->prepare("SELECT seat_id FROM seat_reserved WHERE screening_id = 1");
+                      $stmt_2 ->execute();
 
-
-              // Check connection
-              if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-              }
-              
-
-              $sql_1 = "SELECT seat_id FROM seat_reserved WHERE screening_id = 1";
-              $result_1 = $conn->query($sql_1);
-              $sql = "SELECT * FROM seat WHERE screening_id =1";
-              $result = $conn->query($sql);
-              $num_rows = mysqli_num_rows($result);
-              $counter = 1;
-
-              if ($result->num_rows > 0) {
-
-               
-                // output data of each row
-                while($row = $result->fetch_assoc()) {
-                     $occupied_bool = false;
+                      $occupied_bool = false;
+                      
                       if($counter % 6 ==0 || $counter ==1 ){
                         echo "<div class='row'>\n" ;
                       }
-                    
-                             
-                        //check which seat is occupied
-                        foreach ($result_1 as $row_1) {
-                          if($row_1["seat_id"] == $row["seat_id"] ){
-                            $occupied_bool = true;
-                          } 
-                        }
 
-
-                        //print out the seat according to the occupied condition
-                       if($occupied_bool ){
-                            echo "<div class='seat occupied' id='{$row['seat_no']}'>" . $row["seat_no"]."</div>\n";
-                            
-                          }else{
-                            echo "<div value='{$row['seat_no']}' class='seat' id='{$row['seat_no']}'  onclick='javascript:choose_seat(id)'>" 
-                            . $row["seat_no"]."</div>\n";
-                            
-                          }  
+                      while ($row_2 = $stmt_2->fetch()) {
+                        if($row_2["seat_id"] == $row_1["seat_id"] ){
+                          $occupied_bool = true;
+                          break;
+                        } 
+                      } 
                       
-                      
-                      if($counter%5 ==0 || $counter == $num_rows ){
-                          echo "</div>\n";
-                      }
-                    
-                     $counter += 1;
-                    
-                }
-              } else {
-                echo "0 results";
-              }
-            
-              $conn->close();
 
+                      if($occupied_bool ){
+                        echo "<div class='seat occupied' id='{$row_1['seat_no']}'>" . $row_1["seat_no"]."</div>\n";
+                        
+                      }else{
+                        echo "<div value='{$row_1['seat_no']}' class='seat' id='{$row_1['seat_no']}'  onclick='javascript:choose_seat(id)'>" 
+                        . $row_1["seat_no"]."</div>\n";
+                       
+                      }  
 
+                      if($counter%5 ==0 || $counter == $number_row){
+                        echo "</div>\n";
+                    }
+
+                    $counter += 1;
+
+                    }
+                    unset($stmt_1);
+                    unset($stmt_2);
+                  unset($pdo);
             ?>
           
             <div class="info-row">
               <div class="text-row">
                 <label for="display">Seat Number Selected:</label>
-                <input type="text" name="display" id="display" value="" ></input>
+                <input type="text"  name="display" id="display" value="" ></input>
               </div>
               <div class="text-row">
                 <label for="display">Total Seat Selected:</label>
