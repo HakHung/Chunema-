@@ -2,12 +2,6 @@
 // Initialize the session
 session_start();
  
-// Check if the user is already logged in, if yes then redirect him to welcome page
-// if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-//     header("location: dashboard.php");
-//     exit;
-// }
- 
 // Include config file
 require_once "config.php";
  
@@ -95,30 +89,131 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Login</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
+        body{ 
+            background: url('images/uploads/ft-bg.jpg') no-repeat;
+            font: 14px sans-serif;
+            background-color: black;
+        }
+        section {
+            background-color: black;
+            padding: 60px;
+        }
+        .wrapper{ 
+            width: 350px; padding: 20px; 
+        }
+        footer {
+            position: static;
+            bottom: 0;
+            width: 100%;
+            color: lightblue;
+            text-align: center;
+        }
+        footer {
+            background: url('images/uploads/ft-bg.jpg') no-repeat;
+            background-position: center;
+        }
+        h2{
+            color: gold;
+            padding-bottom: 10px;
+        }
+        label{
+            color: yellow;
+            padding-bottom: 10px;
+        }
+        p{
+            color: white;
+            padding-bottom: 10px;
+        }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <h2>Login</h2>
-        <p>Please fill in your credentials to login.</p>
-        <form method="post">
-            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                <span class="help-block"><?php echo $username_err; ?></span>
-            </div>    
-            <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control">
-                <span class="help-block"><?php echo $password_err; ?></span>
+<header class="header">
+        <nav id="navbar" class="navbar navbar-dark bg-transparent">
+            <div class="container-fluid">
+                <!-- <div class="navbar-header"> -->
+                <a name="top" href="dashboard.php"><img class="logo" src="images/logo1.png" alt="Chunema" width="200" height="90"></a>
+                <!-- </div> -->
+                </ul>
             </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
+        </nav>
+    </header>
+
+    <section clas="item">    
+        <div class="wrapper">
+            <h2>Login</h2>
+            <p>Please fill in your credentials to login.</p>
+            <form method="post">
+                <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
+                    <span class="help-block"><?php echo $username_err; ?></span>
+                </div>    
+                <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control">
+                    <span class="help-block"><?php echo $password_err; ?></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Login">
+                </div>
+                <p>Don't have an account? <a href="signup.php">Sign up now</a></p>
+            </form>
+        </div>
+    </section>
+
+    <footer id="footer">
+        <div class="container fluid text-center text-md-left ">
+            <div class="row">
+                <div class="col-md-2 mb-md-0 mb-2">
+                    <a href="dashboard.php"><img class="logo" src="images/logo1.png" alt="" width="200" height="90" style="margin-top:10px"></a>
+                    <p>5th Star Avenue, Selangor <br>
+                        56500 Unimy</p>
+                    <p>Call us: <a href="#">012-345 6789</a></p>
+                </div>
+                <div class="col-md-3 mb-md-0 mb-3">
+                    <h4>Resources</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Chunema</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Forums</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Help Center</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-md-0 mb- 2">
+                    <h4>Legal</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Terms of Use</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-md-0 mb-3">
+                    <h4>Account</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#">My Account</a></li>
+                        <li><a href="#">Watchlist</a></li>
+                        <li><a href="#">Collections</a></li>
+                        <li><a href="#">User Guide</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-md-0 mb-2">
+                    <h4>Newsletter</h4>
+                    <p style="color:cornflowerblue">Subscribe to our newsletter system now <br> to get latest news from
+                        us.</p>
+                    <form action="#">
+                        <input type="text" placeholder="Enter your email...">
+                    </form>
+                    <a href="#" class="btn">Subscribe now <i class="ion-ios-arrow-forward"></i></a>
+                </div>
             </div>
-            <p>Don't have an account? <a href="signup.php">Sign up now</a>.</p>
-        </form>
-    </div>
+        </div>
+        <div>
+            <div class="backtotop">
+                <p><a href="#top" id="back-to-top">Back to top <i class="ion-ios-arrow-thin-up"></i></a></p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
