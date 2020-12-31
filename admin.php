@@ -2,8 +2,8 @@
 
 require_once "config.php";
 //define variable with empty message
-$movie_name = $description = $director = $producer = $starring =  $genres =$release_date = $running_time =$rating =$keywords =$trailer ="";
-$name_err = $desc_err =$dir_err = $prod_err = $star_err = $genres_err = $release_err = $time_err = $rating_err = $keywords_err = $trailer_err = "";
+$movie_name = $description = $director = $producer = $starring =  $genres =$release_date = $running_time =$rating =$keywords =$trailer = $img_path ="";
+$name_err = $desc_err =$dir_err = $prod_err = $star_err = $genres_err = $release_err = $time_err = $rating_err = $keywords_err = $trailer_err = $img_path_err = "";
 $check_sum = true;
 
 
@@ -109,14 +109,21 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $check_sum = false;
     }
     
+    //check for not empty image
+    if(!empty($_POST['img_path'])) {
+        $img_path = $_POST['img_path'];
+    } else {
+        $img_path_err = "Please specific the image path of the movie";
+        $check_sum = false;
+    }
 
     //if everything is fill in
     if($check_sum){
         // Prepare an insert statement
         $sql = "INSERT INTO movielist 
-        (moviename, description, director, producer, starring, genres, releasedate, runningtime, rating, keyword, url) 
+        (moviename, description, director, producer, starring, genres, releasedate, runningtime, rating, keyword, url, path) 
         VALUES 
-        (:moviename, :description, :director, :producer, :starring, :genres, :releasedate, :runningtime, :rating, :keyword, :url)";
+        (:moviename, :description, :director, :producer, :starring, :genres, :releasedate, :runningtime, :rating, :keyword, :url, :img_path)";
 
 
         //bind parameter
@@ -132,6 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $stmt->bindParam(":rating", $param_rating, PDO::PARAM_STR);
             $stmt->bindParam(":keyword", $param_keyword, PDO::PARAM_STR);
             $stmt->bindParam(":url", $param_url, PDO::PARAM_STR);
+            $stmt->bindParam(":img_path", $param_img_path, PDO::PARAM_STR);
            
 
             // Set parameters
@@ -146,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $param_rating = $rating;
             $param_keyword = $keywords;
             $param_url = $trailer;
-
+            $param_img_path = $img_path;
 
             //execute the statement to insert date to database
             if ($stmt->execute()) {
@@ -321,6 +329,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <label>Trailer URL:</label>
                 <input type="url" name="trailer" value="">
                 <span class="help-block"><?php echo $trailer_err; ?></span>
+            </div>
+            <div class="form-group">
+                <label>Image Path:</label>
+                <input type="text" name="img_path" value="">
+                <span class="help-block"><?php echo $img_path_err; ?></span>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Submit">
