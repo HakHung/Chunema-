@@ -149,14 +149,14 @@ require_once "config.php";
         <div class="container">
             <div class="col-md-4 col-sm-12 col-xs-12">       
             <?php $id = $_GET["myid"];
-                echo $id;
+                //echo $id;
                 $stmt = $pdo->prepare("SELECT * FROM movielist WHERE movieid=$id");
                 $stmt->execute([$id]);
                 while ($row = $stmt->fetch()) {
                 ?>
                 <img src=<?php echo $row['path'];?> alt="" widht="350" height="480">
                 <li class="inner" style="font-size:large;"><a href=<?php echo $row['url'];?>>Watch Trailer!</a></li> 
-                <li class="inner" style="font-size:large;"><a href="ticket.php">Book Now!</a></li>
+                <li class="inner" style="font-size:large;"><a href="movie_seat.php ?  myid= <?php echo $row['movieid'];?>">Book Now!</a></li>
             </div>
 
             <div id="d" class="col-md-8 col-sm-12 col-xs-12">

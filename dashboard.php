@@ -357,64 +357,28 @@ https://flickity.metafizzy.co
     <div>
         <section class="items">
             <div class="carouselOfImages">
-                <div class="carouselImage" style="background-size:cover;">
-                    <img src="images/uploads/slider1.jpg" />
-                    <div class="inner1">
-                        <a href="single.php ? myid= <?php echo 1;?>"> Read more</a>
+                <?php
+                //counter to control loop through the movielist and print in carousel
+                $counter = 1;
+                $stmt = $pdo->prepare("SELECT * FROM movielist");
+                $stmt->execute();
+                while ($row = $stmt->fetch()) {
+                ?>
+                    <div class="carouselImage" style="background-size:cover;">
+                        <img src=<?php echo $row['path']; ?> >
+                        <div class="inner1">
+                            <a href="single.php ? myid= <?php echo $row['movieid']; ?>"> Read more</a>
+                        </div>
+                        <div class="inner2">
+                            <a href="movie_seat.php ? myid= <?php echo $row['movieid']; ?>"> Book Now!</a>
+                        </div>
                     </div>
-                    <div class="inner2">
-                        <a href="#"> Book Now!</a>
-                    </div>
-                </div>
-                <div class="carouselImage" style="background-size:cover;">
-                    <img src="images/uploads/slider2.jpg" />
-                    <div class="inner1">
-                        <a href="single.php ? myid= <?php echo 2;?>"> Read more</a>
-                    </div>
-                    <div class="inner2">
-                        <a href="#"> Book Now!</a>
-                    </div>
-                </div>
-                <div class="carouselImage" style="background-size:cover;">
-                    <img src="images/uploads/slider3.jpg" />
-                    <div class="inner1">
-                        <a href="single.php ? myid= <?php echo 3;?>"> Read more</a>
-                    </div>
-                    <div class="inner2">
-                        <a href="#"> Book Now!</a>
-                    </div>
-                </div>
-                <div class="carouselImage" style="background-size:cover;">
-                    <img src="images/uploads/slider4.jpg" />
-                    <div class="inner1">
-                        <a href="single.php ? myid= <?php echo 4;?> "> Read more</a>
-                    </div>
-                    <div class="inner2">
-                        <a href="#"> Book Now!</a>
-                    </div>
-                </div>
-                <div class="carouselImage" style="background-size:cover;">
-                    <img src="images/uploads/slider5.jpg" />
-                    <div class="inner1">
-                        <a href="single.php ? myid= <?php echo 5;?> "> Read more</a>
-                    </div>
-                    <div class="inner2">
-                        <a href="#"> Book Now!</a>
-                    </div>
-                </div>
-                <div class="carouselImage" style="background-size:cover;">
-                    <img src="images/uploads/slider6.jpg" />
-                    <div class="inner1">
-                        <a href="single.php ? myid= <?php echo 6;?> "> Read more</a>
-                    </div>
-                    <div class="inner2">
-                        <a href="#"> Book Now!</a>
-                    </div>
-                </div>
+                <?php
+                    $counter++;
+                }
+                ?>
             </div>
         </section>
-
-
     </div>
     <!-- footer section-->
     <footer id="footer">
