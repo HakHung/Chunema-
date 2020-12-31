@@ -158,7 +158,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
             //execute the statement to insert date to database
             if ($stmt->execute()) {
-                // Redirect to login page
+                
+                header("location: admin_wrapper.php");
                echo "Result Updated";
             } else {
                 echo "Something went wrong. Please try again later.";
@@ -204,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
 
         .head-title{
-            background-color: grey; 
+            background-color: yellow; 
             text-align: center;
         }
 
@@ -236,6 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </head>
 
 <body>
+    <div>
     <div class="head-title">
             <h2>New Movie</h2>
             <p>Please fill in the detail of the movie</p>
@@ -342,6 +344,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             
         </form>
         
+        </div>
     </div>
 
 

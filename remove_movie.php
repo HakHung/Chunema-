@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
 
         .head-title{
-            background-color: black; 
+            background-color: grey; 
             text-align: center;
         }
 
