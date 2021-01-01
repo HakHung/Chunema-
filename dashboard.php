@@ -370,7 +370,7 @@ https://flickity.metafizzy.co
                             <a href="single.php ? myid= <?php echo $row['movieid']; ?>"> Read more</a>
                         </div>
                         <div class="inner2">
-                            <a href="movie_seat.php ? myid= <?php echo $row['movieid']; ?>"> Book Now!</a>
+                            <a href="ticket.php ? myid= <?php echo $row['movieid']; ?>"> Book Now!</a>
                         </div>
                     </div>
                 <?php
