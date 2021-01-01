@@ -37,6 +37,7 @@ require_once "config.php";
     <style>
         body {
             background: url('images/uploads/ft-bg.jpg') no-repeat;
+            background-color: black;
         }
 
         #navbar {
@@ -156,7 +157,7 @@ require_once "config.php";
                 ?>
                 <img src=<?php echo $row['path'];?> alt="" widht="350" height="480">
                 <li class="inner" style="font-size:large;"><a href=<?php echo $row['url'];?>>Watch Trailer!</a></li> 
-                <li class="inner" style="font-size:large;"><a href="movie_seat.php ?  myid= <?php echo $row['movieid'];?>">Book Now!</a></li>
+                <li class="inner" style="font-size:large;"><a href="ticket.php ?  myid= <?php echo $row['movieid'];?>">Book Now!</a></li>
             </div>
 
             <div id="d" class="col-md-8 col-sm-12 col-xs-12">

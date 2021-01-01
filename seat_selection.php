@@ -5,6 +5,8 @@
                 //submit form
                 if ($_SERVER['REQUEST_METHOD'] == "POST") {
                   
+                  $theatre = $_POST['theatre'];
+                  echo $theatre;
                   $seat_id_list = filter_input(INPUT_POST, 'display');
                   if(empty($seat_id_list)){
                     echo "Please choose your seat to proceed!<br>";
@@ -80,4 +82,3 @@
                 // header('Location: cart.html');
                 // $conn->close();
                 // exit();
-            ?>

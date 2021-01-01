@@ -6,6 +6,83 @@ session_start();
 // Include config file
 require_once "config.php";
 
+$seating_err="";
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+  $seat_id_list = filter_input(INPUT_POST, 'display');
+  if (empty($seat_id_list)) {
+    // echo "Please choose your seat to proceed!<br>";
+    // if(empty(trim($_POST["display"]))){
+      $seating_err = "Please choose your seat to proceed!";
+  } else {
+    $items = preg_split("/[\s,]+/", $seat_id_list);
+    $price = (float)filter_input(INPUT_POST, 'price');
+    $date = date("Y/m/d");
+  
+  // insert new row data to payment table
+  $sql = "INSERT INTO payment(user_id, date, price, purchase) VALUES ('1', :date, :price,'0')";
+
+
+  if ($stmt = $pdo->prepare($sql)) {
+    // Bind variables to the prepared statement as parameters
+    $stmt->bindParam(":date", $param_date, PDO::PARAM_STR);
+    $stmt->bindParam(":price", $param_price, PDO::PARAM_STR);
+
+
+    // Set parameters
+    $param_date = $date;
+    $param_price = $price;
+
+
+    if ($stmt->execute()) {
+      // Redirect to login page
+      echo "Result updated";
+      $payment_id = $pdo->lastInsertId();
+    } else {
+      echo "Something went wrong. Please try again later.";
+    }
+  }
+  
+
+  // echo $payment_id;
+
+  //insert new data into seat_reserved table
+  foreach ($items as $item) {
+    // echo $item;
+    $sql = "SELECT seat_id FROM seat WHERE seat_no = '$item' and screening_id= '1'";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+
+
+    while ($row = $stmt->fetch()) {
+
+      $sql_1 = "INSERT INTO seat_reserved(seat_id, screening_id, payment_id) VALUES ( :seat_id ,'1', :payment_id)";
+      if ($stmt_1 = $pdo->prepare($sql_1)) {
+        // Bind variables to the prepared statement as parameters
+        $stmt_1->bindParam(":seat_id", $param_item, PDO::PARAM_STR);
+        $stmt_1->bindParam(":payment_id", $param_payment_id, PDO::PARAM_STR);
+
+
+        // Set parameters
+        $param_item = $row['seat_id'];
+        $param_payment_id = $payment_id;
+
+        if ($stmt_1->execute()) {
+
+          echo "Result updated";
+        } else {
+          echo "Something went wrong. Please try again later.";
+        }
+      }
+    }
+  }
+}
+}
+
+// header('Location: cart.html');
+// $conn->close();
+// exit();
+
 ?>
 
 
@@ -18,6 +95,8 @@ require_once "config.php";
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
   <title>Movie Seat Selection</title>
   <style>
     .seat {
@@ -76,8 +155,6 @@ require_once "config.php";
       margin-left: 2px;
     }
 
-
-
     .row {
       display: flex;
       justify-content: center;
@@ -117,11 +194,13 @@ require_once "config.php";
 
 
     .input-field {
-      text-align: center;
-      width: 10%;
+      text-align: left;
+      width: 30%;
       padding: 0px 0x;
       margin: 8px;
       box-sizing: border-box;
+      color: black;
+      display: inline-block;
     }
 
     h1 {
@@ -132,54 +211,26 @@ require_once "config.php";
 
 <body>
   <!-- movie title  -->
-  <div class="movie-title">
-    <?php $id = $_GET["myid"];
-    $stmt = $pdo->prepare("SELECT moviename FROM movielist WHERE movieid=$id");
-    $stmt->execute([$id]);
+  <div class="movie-title" style="text-align:center">
+    <?php
+    $movieid = $_SESSION["movieid"];
+    $stmt = $pdo->prepare("SELECT moviename FROM movielist WHERE movieid=$movieid");
+    $stmt->execute([$movieid]);
     $user = $stmt->fetch();
     ?>
     <h1><?php echo $user['moviename']; ?></h1>
+    <h4><?php echo $_SESSION["theatre"] . "&nbsp" . $_SESSION["show"] . "&nbsp" . $_SESSION["date"];?></h4> 
   </div>
   <!-- end of movie title -->
-  <ul class="nav nav-pills justify-content-center">
-    <li class="active"><a data-toggle="pill" href="#step1">Step 1</a></li>
-    <li id="2"><a data-toggle="pill" href="#step2">Step 2</a></li>
-    <li><a data-toggle="pill" href="#step3">Step 3</a></li>
-  </ul>
 
-  <div class="tab-content">
-
-    <div id="step1" class="tab-pane fade in active" style="text-align:center">
-      <h3>Theatre</h3>
-
-      <select name="cinema" id="cinema">
-      <?php  
-        $stmt = $pdo->prepare("SELECT * FROM threatre");
-        $stmt->execute([$id]);
-        while ($row = $stmt->fetch()) {
-        ?>
-        <option><?php echo $row['name'];?></option>
-        <?php
-        };?>
-      </select>
-      
-      <h3>Show Time</h3>
-      <select name="show" id="show">
-        <option value="1000">10.00 am</option>
-        <option value="1400">2.00 pm</option>
-        <option value="1800">6.00 pm</option>
-      </select>
-      <br><br>
-      <button onclick="next(2)"><a data-toggle="pill" href="#step2">Next</a></button>
-    </div>
-
-    <div id="step2" class="tab-pane fade">
+  <div style="text-align:center">
+    <form method="post">
       <h3>Seating</h3>
       <div>
         <ul class="legend">
           <li>
             <div class="seat"></div>
-            <small>N/A</small>
+            <small>Available</small>
           </li>
           <li>
             <div class="seat selected"></div>
@@ -196,78 +247,76 @@ require_once "config.php";
         <div class="screen">Screen</div>
 
 
-        <form method="post" action="seat_selection.php">
-          <?php
+        <!-- <form method="post" action="seat_selection.php"> -->
+        <?php
 
 
-          $stmt_1 = $pdo->prepare("SELECT * FROM seat WHERE screening_id =1");
-          $stmt_1->execute();
+        $stmt_1 = $pdo->prepare("SELECT * FROM seat WHERE screening_id =1");
+        $stmt_1->execute();
 
 
-          $number_row  = $stmt_1->rowCount();
-          $counter = 1;
-          while ($row_1 = $stmt_1->fetch()) {
-            $stmt_2 = $pdo->prepare("SELECT seat_id FROM seat_reserved WHERE screening_id = 1");
-            $stmt_2->execute();
+        $number_row  = $stmt_1->rowCount();
+        $counter = 1;
+        while ($row_1 = $stmt_1->fetch()) {
+          $stmt_2 = $pdo->prepare("SELECT seat_id FROM seat_reserved WHERE screening_id = 1");
+          $stmt_2->execute();
 
-            $occupied_bool = false;
+          $occupied_bool = false;
 
-            if ($counter % 6 == 0 || $counter == 1) {
-              echo "<div class='row'>\n";
-            }
-
-            while ($row_2 = $stmt_2->fetch()) {
-              if ($row_2["seat_id"] == $row_1["seat_id"]) {
-                $occupied_bool = true;
-                break;
-              }
-            }
-
-
-            if ($occupied_bool) {
-              echo "<div class='seat occupied' id='{$row_1['seat_no']}'>" . $row_1["seat_no"] . "</div>\n";
-            } else {
-              echo "<div value='{$row_1['seat_no']}' class='seat' id='{$row_1['seat_no']}'  onclick='javascript:choose_seat(id)'>"
-                . $row_1["seat_no"] . "</div>\n";
-            }
-
-            if ($counter % 5 == 0 || $counter == $number_row) {
-              echo "</div>\n";
-            }
-
-            $counter += 1;
+          if ($counter % 6 == 0 || $counter == 1) {
+            echo "<div class='row'>\n";
           }
-          unset($stmt_1);
-          unset($stmt_2);
-          unset($pdo);
-          ?>
 
-          <div class="info-row">
-            <div class="text-row">
+          while ($row_2 = $stmt_2->fetch()) {
+            if ($row_2["seat_id"] == $row_1["seat_id"]) {
+              $occupied_bool = true;
+              break;
+            }
+          }
+
+
+          if ($occupied_bool) {
+            echo "<div class='seat occupied' id='{$row_1['seat_no']}'>" . $row_1["seat_no"] . "</div>\n";
+          } else {
+            echo "<div value='{$row_1['seat_no']}' class='seat' id='{$row_1['seat_no']}'  onclick='javascript:choose_seat(id)'>"
+              . $row_1["seat_no"] . "</div>\n";
+          }
+
+          if ($counter % 5 == 0 || $counter == $number_row) {
+            echo "</div>\n";
+          }
+
+          $counter += 1;
+        }
+        unset($stmt_1);
+        unset($stmt_2);
+        unset($pdo);
+        ?>
+
+        <div class="info-row">
+          <div class="text-row">
+            <div class="form-group <?php echo (!empty($seating_err)) ? 'has-error' : ''; ?>">
               <label for="display">Seat Number Selected:</label>
-              <input type="text" name="display" id="display" value="" readonly></input>
+              <input type="text" class="input-field" name="display" id="display" value="" readonly></input>
+              <span class="help-block"><?php echo $seating_err; ?></span>
             </div>
-            <div class="text-row">
-              <label for="display">Total Seat Selected:</label>
-              <input type="text" class="input-field" name="count" id="count" value="0" readonly></input>
+          </div>
+          <div class="text-row">
+            <label for="display">Total Seat Selected:</label>
+            <input type="text" class="input-field" name="count" id="count" value="0" readonly></input>
+            <div>
+              <div class="text-row">
+                <label for="display">Total Price: $</label>
+                <input type="text" class="input-field" name="price" id="price" value="0" readonly></input>
+              </div>
               <div>
-                <div class="text-row">
-                  <label for="display">Total Price: $</label>
-                  <input type="text" class="input-field" name="price" id="price" value="0" readonly></input>
-                </div>
-                <div>
-                  <button class="submission" type="submit">Check Out</button>
-                </div>
+                <button class="submission" type="submit">Check Out</button>
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
-    <div id="step3" class="tab-pane fade">
-      <h3>Payment</h3>
-
-    </div>
+    </form>
   </div>
 
   <script>
@@ -299,11 +348,6 @@ require_once "config.php";
         console.log(seat_sel);
         display_scr.value = seat_sel;
       }
-    }
-
-    function next(id) {
-      document.getElementbyId("2").classList.add("active");
-
     }
   </script>
 </body>
