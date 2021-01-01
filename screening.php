@@ -123,14 +123,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </div>
         <div class="wrapper">
 
+<<<<<<< HEAD
             <form method="post">
+=======
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+>>>>>>> efa5ac9eb35dda58ee76fac35269b49f0044c5ff
 
 
                 <div>
                     <h1>Movie</h1>
+<<<<<<< HEAD
                     <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
                         <label for="sel1">Select One:</label>
                         <select class="form-control" id="movie" name='moviename'>
+=======
+                    <div class="form-group">
+                        <label for="sel1">Select One:</label>
+                        <select class="form-control" id="movie" name='movie'>
+>>>>>>> efa5ac9eb35dda58ee76fac35269b49f0044c5ff
                             <?php
                             $stmt = $pdo->prepare("SELECT * FROM movielist");
                             $stmt->execute();
@@ -145,7 +155,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </div>
 
                 <h1>Theatre</h1>
+<<<<<<< HEAD
                 <div class="form-group <?php echo (!empty($cname_err)) ? 'has-error' : ''; ?>">
+=======
+                <div class="form-group">
+>>>>>>> efa5ac9eb35dda58ee76fac35269b49f0044c5ff
                     <label for="sel1">Select One:</label>
                     <select class="form-control" id="cinema" name='theatre'>
                         <?php
@@ -161,7 +175,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </div>
 
                 <h1>Showtime</h1>
+<<<<<<< HEAD
                 <div class="form-group <?php echo (!empty($stime_err)) ? 'has-error' : ''; ?>">
+=======
+                <div class="form-group">
+>>>>>>> efa5ac9eb35dda58ee76fac35269b49f0044c5ff
                     <label for="sel1">Select Time:</label>
                     <input type="time" id="appt" name="showtime">
                     <span class="help-block"><?php echo $stime_err; ?></span>
