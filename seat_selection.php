@@ -5,8 +5,29 @@
                 //submit form
                 if ($_SERVER['REQUEST_METHOD'] == "POST") {
                   
-                  $theatre = $_POST['theatre'];
-                  echo $theatre;
+                  $option = isset($_POST['theatre']) ? $_POST['theatre'] : false;
+
+                  if ($option) {
+                     echo htmlentities($_POST['theatre'], ENT_QUOTES, "UTF-8");
+               
+                  } else {
+                    echo "task option is required";
+                    exit; 
+                  }
+               
+                  $date = $_POST['datepicker'];
+                  echo $date;
+               
+                  $option3 = isset($_POST['show']) ? $_POST['show'] : false;
+               
+                  if ($option) {
+                     echo htmlentities($_POST['show'], ENT_QUOTES, "UTF-8");
+               
+                  } else {
+                    echo "task option is required";
+                    exit; 
+                  }
+
                   $seat_id_list = filter_input(INPUT_POST, 'display');
                   if(empty($seat_id_list)){
                     echo "Please choose your seat to proceed!<br>";

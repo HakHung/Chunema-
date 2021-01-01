@@ -6,77 +6,77 @@ session_start();
 // Include config file
 require_once "config.php";
 
-$seating_err="";
+$seating_err = "";
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
   $seat_id_list = filter_input(INPUT_POST, 'display');
   if (empty($seat_id_list)) {
     // echo "Please choose your seat to proceed!<br>";
     // if(empty(trim($_POST["display"]))){
-      $seating_err = "Please choose your seat to proceed!";
+    $seating_err = "Please choose your seat to proceed!";
   } else {
     $items = preg_split("/[\s,]+/", $seat_id_list);
     $price = (float)filter_input(INPUT_POST, 'price');
     $date = date("Y/m/d");
-  
-  // insert new row data to payment table
-  $sql = "INSERT INTO payment(user_id, date, price, purchase) VALUES ('1', :date, :price,'0')";
+
+    // insert new row data to payment table
+    $sql = "INSERT INTO payment(user_id, date, price, purchase) VALUES ('1', :date, :price,'0')";
 
 
-  if ($stmt = $pdo->prepare($sql)) {
-    // Bind variables to the prepared statement as parameters
-    $stmt->bindParam(":date", $param_date, PDO::PARAM_STR);
-    $stmt->bindParam(":price", $param_price, PDO::PARAM_STR);
+    if ($stmt = $pdo->prepare($sql)) {
+      // Bind variables to the prepared statement as parameters
+      $stmt->bindParam(":date", $param_date, PDO::PARAM_STR);
+      $stmt->bindParam(":price", $param_price, PDO::PARAM_STR);
 
 
-    // Set parameters
-    $param_date = $date;
-    $param_price = $price;
+      // Set parameters
+      $param_date = $date;
+      $param_price = $price;
 
 
-    if ($stmt->execute()) {
-      // Redirect to login page
-      echo "Result updated";
-      $payment_id = $pdo->lastInsertId();
-    } else {
-      echo "Something went wrong. Please try again later.";
+      if ($stmt->execute()) {
+        // Redirect to login page
+        echo "Result updated";
+        $payment_id = $pdo->lastInsertId();
+      } else {
+        echo "Something went wrong. Please try again later.";
+      }
     }
-  }
-  
-
-  // echo $payment_id;
-
-  //insert new data into seat_reserved table
-  foreach ($items as $item) {
-    // echo $item;
-    $sql = "SELECT seat_id FROM seat WHERE seat_no = '$item' and screening_id= '1'";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
 
 
-    while ($row = $stmt->fetch()) {
+    // echo $payment_id;
 
-      $sql_1 = "INSERT INTO seat_reserved(seat_id, screening_id, payment_id) VALUES ( :seat_id ,'1', :payment_id)";
-      if ($stmt_1 = $pdo->prepare($sql_1)) {
-        // Bind variables to the prepared statement as parameters
-        $stmt_1->bindParam(":seat_id", $param_item, PDO::PARAM_STR);
-        $stmt_1->bindParam(":payment_id", $param_payment_id, PDO::PARAM_STR);
+    //insert new data into seat_reserved table
+    foreach ($items as $item) {
+      // echo $item;
+      $sql = "SELECT seat_id FROM seat WHERE seat_no = '$item' and screening_id= '1'";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute();
 
 
-        // Set parameters
-        $param_item = $row['seat_id'];
-        $param_payment_id = $payment_id;
+      while ($row = $stmt->fetch()) {
 
-        if ($stmt_1->execute()) {
+        $sql_1 = "INSERT INTO seat_reserved(seat_id, screening_id, payment_id) VALUES ( :seat_id ,'1', :payment_id)";
+        if ($stmt_1 = $pdo->prepare($sql_1)) {
+          // Bind variables to the prepared statement as parameters
+          $stmt_1->bindParam(":seat_id", $param_item, PDO::PARAM_STR);
+          $stmt_1->bindParam(":payment_id", $param_payment_id, PDO::PARAM_STR);
 
-          echo "Result updated";
-        } else {
-          echo "Something went wrong. Please try again later.";
+
+          // Set parameters
+          $param_item = $row['seat_id'];
+          $param_payment_id = $payment_id;
+
+          if ($stmt_1->execute()) {
+
+            echo "Result updated";
+          } else {
+            echo "Something went wrong. Please try again later.";
+          }
         }
       }
     }
   }
-}
 }
 
 // header('Location: cart.html');
@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
       border-spacing: 15px;
-      display: inline;
+      display: inline-block;
       text-align: center;
     }
 
@@ -217,9 +217,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $stmt = $pdo->prepare("SELECT moviename FROM movielist WHERE movieid=$movieid");
     $stmt->execute([$movieid]);
     $user = $stmt->fetch();
+    $threatre = $_SESSION['theatre'];
     ?>
     <h1><?php echo $user['moviename']; ?></h1>
-    <h4><?php echo $_SESSION["theatre"] . "&nbsp" . $_SESSION["show"] . "&nbsp" . $_SESSION["date"];?></h4> 
+    <h4><?php echo $_SESSION["theatre"] . "&nbsp" . $_SESSION["show"] . "&nbsp" . $_SESSION["date"]; ?></h4>
   </div>
   <!-- end of movie title -->
 
@@ -250,6 +251,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         <!-- <form method="post" action="seat_selection.php"> -->
         <?php
 
+        $stmt = $pdo->prepare("SELECT threatre_id FROM threatre WHERE threatre.name= $threatre ");
+        $stmt->execute();
+        $user = $stmt->fetch();
 
         $stmt_1 = $pdo->prepare("SELECT * FROM seat WHERE screening_id =1");
         $stmt_1->execute();

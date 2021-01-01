@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       <?php $movieid = $_GET["myid"];
       $_SESSION["movieid"] = $movieid;
       $stmt = $pdo->prepare("SELECT moviename FROM movielist WHERE movieid=$movieid");
-      $stmt->execute([$movieid]);
+      $stmt->execute();
       $user = $stmt->fetch();
       ?>
       <h1><?php echo $user['moviename']; ?></h1>
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <select class="form-control" id="cinema" name='theatre'>
                <?php
                $stmt = $pdo->prepare("SELECT * FROM threatre");
-               $stmt->execute([$id]);
+               $stmt->execute();
                while ($row = $stmt->fetch()) {
                ?>
                   <option value="<?php echo $row['name']; ?>"><?php echo $row['name']; ?></option>
@@ -95,9 +95,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
          <div class="form-group">
             <label for="sel1">Select One:</label>
             <select class="form-control" name="show">
-               <option value="10.00am">10.00 am</option>
-               <option value="2.00pm">2.00 pm</option>
-               <option value="6.00pm">6.00 pm</option>
+            <?php
+               $stmt = $pdo->prepare("SELECT * FROM screening WHERE movie_id=$movieid");
+               $stmt->execute();
+               while ($row = $stmt->fetch()) {
+               ?>
+                  <option value="<?php echo $row['show_time']; ?>"><?php echo $row['show_time']; ?></option>
+               <?php
+               }; ?>
             </select>
             <br><br>
          </div>
