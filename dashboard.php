@@ -151,7 +151,7 @@ https://flickity.metafizzy.co
 
         .flickity-enabled.is-draggable {
             -webkit-tap-highlight-color: transparent;
-            tap-highlight-color: transparent;
+            /* tap-highlight-color: transparent; */
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -340,7 +340,7 @@ https://flickity.metafizzy.co
                             </a>
 
                             <ul class="dropdown-menu">
-                                <li><a href="profile.php">Profile</a></li>
+                                <li><a href="account.php">Profile</a></li>
                                 <li><a href="cart.php">Cart</a></li>
                             </ul>
                         </li>
