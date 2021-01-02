@@ -17,7 +17,7 @@ require_once "config.php";
 
 <head>
 <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Cart</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         body{ 
@@ -27,10 +27,11 @@ require_once "config.php";
         }
         section {
             background-color: black;
-            padding: 125px 50px 125px 50px;
+            padding: 60px;
         }
         .wrapper{ 
-            width: 350px; padding: 20px; 
+            width: 350px; 
+            padding: 20px; 
         }
         footer {
             position: static;
@@ -93,32 +94,28 @@ require_once "config.php";
     <section clas="item">    
         <div class="wrapper">
             <h2>Purchase Details</h2>
-            <?php
-
-$stmt = $pdo->prepare("SELECT * FROM payment");
-$stmt->execute();
- $number_row  = $stmt->rowCount();
- $counter = 1;
- $color = '';
- $color = "style='background-color :  #acc5f3';";
- $size = "width=100%;";
-  echo "<table $color $size> ";
-  echo "<tr><th>Ticket</th><th>Total</th></tr>";
-
-  // set the resulting array to associative
- while ($row = $stmt->fetch()) {
-     //  echo "price: " . $row["price"];
-
- // echo "<table $color>";
- echo "<tr ><td >" . $row['purchase']. "</td><td>" . $row["price"]. "</td></tr>";
-}
- echo "<tr ><td></td><td></td></tr></table>";
-?>
-  <br>
-    <button>Proceed to payment</button>
-    <button>Cancel</button>
-
-            
+            <form method="post">
+                <div class="form-group">
+                    <label> Moviename </label>
+                    <input type="text" name="moviename" class="form-control" value="Wonder Woman" disabled>
+                </div>
+                </div class="form-group">
+                    <label> Showtime </label>
+                    <input type="text" name="showtime" class="form-control" value="12:00 a.m." disabled>
+                </div>
+                <div class="form-group">
+                    <label> Theatre </label>
+                    <input type="text" name="theatre" class="form-control" value="Chunema" disabled>
+                </div>
+                <div class="form-group">
+                    <label> Seats </label>
+                    <input type="text" name="seats" class="form-control" value="S1, S2" disabled>
+                </div>
+                <div class="form-group">
+                    <button>Proceed to payment</button>
+                    <button>Cancel</button>   
+                </div>
+            </form>     
         </div>
     </section>
 
@@ -176,13 +173,28 @@ $stmt->execute();
             </div>
         </div>
     </footer>   
+                <!--<?php
+                $stmt = $pdo->prepare("SELECT * FROM payment");
+                $stmt->execute();
+                $number_row  = $stmt->rowCount();
+                $counter = 1;
+                $color = '';
+                $color = "style='background-color :  #acc5f3';";
+                $size = "width=100%;";
+                echo "<table $color $size> ";
+                echo "<tr><th>Ticket</th><th>Total</th></tr>";
 
+                // set the resulting array to associative
+                while ($row = $stmt->fetch()) {
+                    //  echo "price: " . $row["price"];
 
-    
-
-
-
-
+                // echo "<table $color>";
+                echo "<tr ><td >" . $row['purchase']. "</td><td>" . $row["price"]. "</td></tr>";
+                }
+                echo "<tr ><td></td><td></td></tr></table>";
+                ?><br> -->    
 </body>
 
 </html>
+
+
