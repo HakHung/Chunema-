@@ -220,9 +220,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $threatre = $_SESSION['theatre'];
     ?>
     <h1><?php echo $user['moviename']; ?></h1>
-    <h4><?php echo $_SESSION["theatre"] . "&nbsp" . $_SESSION["show"] . "&nbsp" . $_SESSION["date"]; ?></h4>
+    <h4><?php echo $threatre .  "&nbsp" . $_SESSION["date"]; ?></h4>
   </div>
   <!-- end of movie title -->
+  <?php
+  $stmt = $pdo->prepare("SELECT threatre_id FROM threatre WHERE threatre.name = '$threatre'");
+  $stmt->execute();
+  $user = $stmt->fetch();
+  $threatreid = $user['threatre_id'];
+  ?>
 
   <div style="text-align:center">
     <form method="post">
@@ -247,13 +253,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       <div class="threatre">
         <div class="screen">Screen</div>
 
+        <h3>Show Time</h3>
+        <div class="form-group">
+          <label for="sel1">Select One:</label>
+          <select class="form-control" name="show">
+            <?php
 
+            $stmt1 = $pdo->prepare("SELECT * FROM screening WHERE movie_id=$movieid AND threatre_id='$threatreid'");
+            $stmt1->execute();
+            while ($row = $stmt1->fetch()) {
+            ?>
+              <option value="<?php echo $row['show_time']; ?>"><?php echo $row['show_time']; ?></option>
+            <?php
+            }; ?>
+          </select>
+          <br><br>
+        </div>
         <!-- <form method="post" action="seat_selection.php"> -->
         <?php
-
-        $stmt = $pdo->prepare("SELECT threatre_id FROM threatre WHERE threatre.name= $threatre ");
-        $stmt->execute();
-        $user = $stmt->fetch();
 
         $stmt_1 = $pdo->prepare("SELECT * FROM seat WHERE screening_id =1");
         $stmt_1->execute();
@@ -309,10 +326,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <label for="display">Total Seat Selected:</label>
             <input type="text" class="input-field" name="count" id="count" value="0" readonly></input>
             <div>
-              <div class="text-row">
+              <!-- <div class="text-row">
                 <label for="display">Total Price: $</label>
                 <input type="text" class="input-field" name="price" id="price" value="0" readonly></input>
-              </div>
+              </div> -->
               <div>
                 <button class="submission" type="submit">Check Out</button>
               </div>

@@ -158,13 +158,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
             //execute the statement to insert date to database
             if ($stmt->execute()) {
-                
-                header("location: admin_wrapper.php");
-               echo "Result Updated";
+                echo "<script>alert('Recorded');window.location.href='admin_wrapper.php';</script>";
             } else {
                 echo "Something went wrong. Please try again later.";
             }
-
 
             //close statement
             unset($stmt);
@@ -175,15 +172,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }else{
         echo "Something Wrong";
     }
-
-
 }
-
-
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -205,7 +195,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
 
         .head-title{
-            background-color: yellow; 
+            background-color: black; 
             text-align: center;
         }
 

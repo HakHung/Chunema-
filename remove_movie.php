@@ -12,8 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
              $sql = "DELETE FROM movielist WHERE movieid = $movie_id";
              $stmt = $pdo->prepare($sql);
              if ($stmt->execute()) {
-                // Redirect to login page
-               echo "Result Updated";
+                echo "<script>alert('Data deleted');window.location.href='admin_wrapper.php';</script>";
             } else {
                 echo "Something went wrong. Please try again later.";
             }

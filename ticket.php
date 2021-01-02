@@ -12,12 +12,11 @@ $date_err = "";
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
    $option = isset($_POST['datepicker']) ? $_POST['datepicker'] : false;
    $_SESSION["theatre"] = $_POST['theatre'];
-   $_SESSION["show"] = $_POST['show'];
    $_SESSION["date"] = $_POST['datepicker'];
    if ($option) {
       // $date = $_POST['datepicker'];
       // echo $date;
-   
+
       header("location:movie_seat.php");
    } else {
       $date_err = "Please select a date";
@@ -54,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
          color: gold;
       }
    </style>
+
 </head>
 
 <body>
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
          <h3>Theatre</h3>
          <div class="form-group">
             <label for="sel1">Select One:</label>
-            <select class="form-control" id="cinema" name='theatre'>
+            <select class="form-control" id="theatre" name='theatre'>
                <?php
                $stmt = $pdo->prepare("SELECT * FROM threatre");
                $stmt->execute();
@@ -91,21 +91,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <span class="help-block"><?php echo $date_err; ?></span>
          </div>
 
-         <h3>Show Time</h3>
-         <div class="form-group">
-            <label for="sel1">Select One:</label>
-            <select class="form-control" name="show">
-            <?php
-               $stmt = $pdo->prepare("SELECT * FROM screening WHERE movie_id=$movieid");
-               $stmt->execute();
-               while ($row = $stmt->fetch()) {
-               ?>
-                  <option value="<?php echo $row['show_time']; ?>"><?php echo $row['show_time']; ?></option>
-               <?php
-               }; ?>
-            </select>
-            <br><br>
-         </div>
          <input type="submit" value="Next"></input>
       </form>
    </div>

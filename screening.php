@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $stime_err = "Please enter a showing time.";
         $check_sum = false;
     }
-
     if ($check_sum) {
         // Prepare an insert statement
         $sql = "INSERT INTO screening 
@@ -41,9 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $param_showtime = $show_time;
 
             if ($stmt->execute()) {
+                echo "<script>alert('Recorded');window.location.href='admin_wrapper.php';</script>";
 
-                //header("location: admin_wrapper.php");
-                echo "Result Updated";
             } else {
                 echo "Something went wrong. Please try again later.";
             }
@@ -53,9 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             unset($stmt);
         }
         unset($pdo);
-    } else {
-        echo "Something Wrong";
-    }
+    } //else {
+    //     echo "Something Wrong";
+    // }
 }
 
 ?>
@@ -123,30 +121,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </div>
         <div class="wrapper">
 
-<<<<<<< HEAD
             <form method="post">
-=======
-            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
->>>>>>> efa5ac9eb35dda58ee76fac35269b49f0044c5ff
 
 
                 <div>
                     <h1>Movie</h1>
-<<<<<<< HEAD
                     <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
                         <label for="sel1">Select One:</label>
                         <select class="form-control" id="movie" name='moviename'>
-=======
-                    <div class="form-group">
-                        <label for="sel1">Select One:</label>
-                        <select class="form-control" id="movie" name='movie'>
->>>>>>> efa5ac9eb35dda58ee76fac35269b49f0044c5ff
                             <?php
                             $stmt = $pdo->prepare("SELECT * FROM movielist");
                             $stmt->execute();
                             while ($row = $stmt->fetch()) {
                             ?>
-                                <option value="<?php echo $row['moviename']; ?>"><?php echo $row['moviename']; ?></option>
+                                <option value="<?php echo $row['movieid']; ?>"><?php echo $row['moviename']; ?></option>
                             <?php
                             }; ?>
                         </select>
@@ -155,11 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </div>
 
                 <h1>Theatre</h1>
-<<<<<<< HEAD
                 <div class="form-group <?php echo (!empty($cname_err)) ? 'has-error' : ''; ?>">
-=======
-                <div class="form-group">
->>>>>>> efa5ac9eb35dda58ee76fac35269b49f0044c5ff
                     <label for="sel1">Select One:</label>
                     <select class="form-control" id="cinema" name='theatre'>
                         <?php
@@ -167,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         $stmt->execute();
                         while ($row = $stmt->fetch()) {
                         ?>
-                            <option value="<?php echo $row['name']; ?>"><?php echo $row['name']; ?></option>
+                            <option value="<?php echo $row['threatre_id']; ?>"><?php echo $row['name']; ?></option>
                         <?php
                         }; ?>
                     </select>
@@ -175,11 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </div>
 
                 <h1>Showtime</h1>
-<<<<<<< HEAD
                 <div class="form-group <?php echo (!empty($stime_err)) ? 'has-error' : ''; ?>">
-=======
-                <div class="form-group">
->>>>>>> efa5ac9eb35dda58ee76fac35269b49f0044c5ff
                     <label for="sel1">Select Time:</label>
                     <input type="time" id="appt" name="showtime">
                     <span class="help-block"><?php echo $stime_err; ?></span>

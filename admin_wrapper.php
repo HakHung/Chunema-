@@ -15,24 +15,17 @@
         display: flex;
         justify-content: center;
     }
-
-
-    
-
-
-   
     </style>
 </head>
 
 
 
 <body>
-  
-  
         <div id="tab-bar">
             <ul class="nav nav-pills justify-content-center">
                 <li class="active"><a data-toggle="pill" href="#add-movie">Add Movie</a></li>
                 <li id="2" ><a data-toggle="pill" href="#remove-movie">Remove Movie</a></li>
+                <li id="3" ><a data-toggle="pill" href="#screening-time">Screening Time</a></li>
             </ul>
         </div>
     
@@ -49,6 +42,11 @@
             <div id="remove-movie" class="tab-pane fade">
                 <?php
                     require "remove_movie.php";
+                ?>
+            </div>
+            <div id="screening-time" class="tab-pane fade">
+                <?php
+                    require "screening.php";
                 ?>
             </div>
         </div>
