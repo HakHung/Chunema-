@@ -217,13 +217,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         <!-- <form method="post" action="seat_selection.php"> -->
         <?php
 
-        $stmt_1 = $pdo->prepare("SELECT * FROM seat WHERE screening_id = $screeningid");
+        $stmt_1 = $pdo->prepare("SELECT * FROM seat WHERE threatre_id = $threatreid");
         $stmt_1->execute();
 
 
         $number_row  = $stmt_1->rowCount();
         $counter = 1;
         while ($row_1 = $stmt_1->fetch()) {
+        
           $stmt_2 = $pdo->prepare("SELECT seat_id FROM seat_reserved WHERE screening_id = $screeningid AND screening_date = '$screening_date'");
           $stmt_2->execute();
 
@@ -236,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
           while ($row_2 = $stmt_2->fetch()) {
             $items = preg_split("/[\s,]+/", $row_2["seat_id"]);
             foreach($items as $item){
-        
+       
               if ($item == $row_1["seat_id"]) {
                   $occupied_bool = true;
                   break;
