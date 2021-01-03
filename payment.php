@@ -6,6 +6,7 @@ session_start();
 // Include config file
 require_once "config.php";
 
+<<<<<<< HEAD
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $total_price =0;
 
@@ -94,6 +95,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 ?>
 
 
+=======
+?>
+>>>>>>> 1d2030771913e895e5b3cbc5693cf341086e5490
 
 <!DOCTYPE html>
 <html lang="en">

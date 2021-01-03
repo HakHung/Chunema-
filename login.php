@@ -1,6 +1,6 @@
 <?php
 // Initialize the session
-session_start();
+// session_start();
  
 // Include config file
 require_once "config.php";
@@ -9,6 +9,7 @@ require_once "config.php";
 $username = $password = "";
 $username_err = $password_err = "";
  
+
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
  
@@ -55,8 +56,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             // Store data in session variables
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;                            
+                            $_SESSION["username"] = $username;  
                             
+                            $stmt = $pdo->prepare("SELECT * FROM userdetails WHERE username='$username'");
+                            $stmt->execute();
+                            $row = $stmt->fetch();
+                            
+                            $_SESSION['email'] = $row['email'];
                             // Redirect user to index page
                             header("location: dashboard.php");
                         } else{
