@@ -268,14 +268,14 @@ https://flickity.metafizzy.co
         }
 
         /* Centered text */
-        .carouselImage:hover .inner1 {
+        .carouselImage .inner1 {
             position: absolute;
             top: 60%;
             left: 40%;
             transform: translate(-50%, -50%);
         }
 
-        .carouselImage:hover .inner2 {
+        .carouselImage .inner2 {
             position: absolute;
             top: 80%;
             left: 40%;
@@ -291,6 +291,7 @@ https://flickity.metafizzy.co
             text-align: center;
             border-radius: 5px;
             color: white;
+            opacity: 1;
         }
     </style>
     <script>

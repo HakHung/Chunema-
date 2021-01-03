@@ -93,21 +93,28 @@ require_once "config.php";
         h1 {
             color: gold;
         }
-        p{
+
+        p {
             color: white;
         }
-        #d h4{
-            color:yellow;
+
+        #d h4 {
+            color: yellow;
         }
-        .inner a:hover{
+
+        .inner{
+            text-align:center;
+            padding:20px;
+            
+        }
+        .inner a:hover {
             width: 75px;
             height: 20px;
             background: gold;
             padding: 10px;
-            text-align: center;
             border-radius: 5px;
-            color: white;
         }
+
     </style>
     <script>
 
@@ -148,40 +155,42 @@ require_once "config.php";
     <!-- END | Header -->
     <section>
         <div class="container">
-            <div class="col-md-4 col-sm-12 col-xs-12">       
-            <?php $id = $_GET["myid"];
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <?php $id = $_GET["myid"];
                 //echo $id;
                 $stmt = $pdo->prepare("SELECT * FROM movielist WHERE movieid=$id");
                 $stmt->execute();
                 while ($row = $stmt->fetch()) {
                 ?>
-                <img src=<?php echo $row['path'];?> alt="" widht="350" height="480">
-                <li class="inner" style="font-size:large;"><a href=<?php echo $row['url'];?>>Watch Trailer!</a></li> 
-                <li class="inner" style="font-size:large;"><a href="ticket.php ?  myid= <?php echo $row['movieid'];?>">Book Now!</a></li>
+                    <img src=<?php echo $row['path']; ?> alt="" widht="350" height="480">
+                    <div class="inner">
+                        <a href=<?php echo $row['url']; ?>>Watch Trailer!</a><br><br>   
+                        <a href="ticket.php ?  myid= <?php echo $row['movieid']; ?>">Book Now!</a>
+                    </div>
             </div>
 
             <div id="d" class="col-md-8 col-sm-12 col-xs-12">
             <?php
-                    echo "<h1>".$row['moviename']. "</h1>". "<br />\n";
-                    echo "<p>".$row['description']."</p>"."<br />\n";
+                    echo "<h1>" . $row['moviename'] . "</h1>" . "<br />\n";
+                    echo "<p>" . $row['description'] . "</p>" . "<br />\n";
                     echo "<h4> Director: </h4>";
-                    echo "<p>".$row['director']."</p>"."<br />\n";
+                    echo "<p>" . $row['director'] . "</p>" . "<br />\n";
                     echo "<h4> Producer: </h4>";
-                    echo "<p>".$row['producer']."</p>"."<br />\n";
+                    echo "<p>" . $row['producer'] . "</p>" . "<br />\n";
                     echo "<h4> Stars: </h4>";
-                    echo "<p>".$row['starring']."</p>"."<br />\n";
+                    echo "<p>" . $row['starring'] . "</p>" . "<br />\n";
                     echo "<h4> Genres: </h4>";
-                    echo "<p>".$row['genres']."</p>"."<br />\n";
+                    echo "<p>" . $row['genres'] . "</p>" . "<br />\n";
                     echo "<h4> Release Date: </h4>";
-                    echo "<p>".$row['releasedate']."</p>"."<br />\n";
+                    echo "<p>" . $row['releasedate'] . "</p>" . "<br />\n";
                     echo "<h4> Run Time: </h4>";
-                    echo "<p>".$row['runningtime']."</p>"."<br />\n";
+                    echo "<p>" . $row['runningtime'] . "</p>" . "<br />\n";
                     echo "<h4> MMPA Rating: </h4>";
-                    echo "<p>".$row['rating']."</p>"."<br />\n";
+                    echo "<p>" . $row['rating'] . "</p>" . "<br />\n";
                     echo "<h4> Plot Keywords: </h4>";
-                    echo "<p>".$row['keyword']."</p>"."<br />\n";
-                }             
-                ?>
+                    echo "<p>" . $row['keyword'] . "</p>" . "<br />\n";
+                }
+            ?>
             </div>
         </div>
     </section>
