@@ -67,11 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <title>Admin Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-        body {
-            font: 14px sans-serif;
-            background: url('images/uploads/ft-bg.jpg') no-repeat;
-            background-color: black;
-        }
 
         .wrapper {
             width: 100%;
@@ -79,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
 
         .head-title {
-            background-color: yellow;
             text-align: center;
         }
 
