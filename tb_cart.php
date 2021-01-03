@@ -95,48 +95,25 @@ $seatreserved_id = $_SESSION['seat_list'];
     <section clas="item">    
         <div class="wrapper">
             <h2>Purchase Details</h2>
-<<<<<<< HEAD
-            <?php
-foreach ($seatreserved_id as $item){
-    echo $item;
-}
- $stmt = $pdo->prepare("SELECT * FROM payment WHERE user_id = '$userid'");
- $stmt->execute();
- $number_row  = $stmt->rowCount();
- $counter = 1;
- $color = '';
- $color = "style='background-color :  #acc5f3';";
- $size = "width=100%;";
-  echo "<table $color $size> ";
-  echo "<tr><th>Ticket</th><th>Total</th></tr>";
-
-  // set the resulting array to associative
- while ($row = $stmt->fetch()) {
-     //  echo "price: " . $row["price"];
-
- // echo "<table $color>";
- echo "<tr ><td >" . $row['purchase']. "</td><td>" . $row["price"]. "</td></tr>";
-}
- echo "<tr ><td></td><td></td></tr></table>";
-?>
-  <br>
-    <button>Proceed to payment</button>
-    <button>Cancel</button>
-
-            
-=======
             <form method="post">
+            <?php
+            $movieid = $_SESSION["movieid"];
+            $stmt = $pdo->prepare("SELECT moviename FROM movielist WHERE movieid=$movieid");
+            $stmt->execute([$movieid]);
+            $user = $stmt->fetch();
+            echo $user['moviename'];    
+            ?>
                 <div class="form-group">
                     <label> Moviename </label>
-                    <input type="text" name="moviename" class="form-control" value="Wonder Woman" disabled>
+                    <input type="text" name="moviename" class="form-control" value="<?php echo $user['moviename']; ?>" disabled>
                 </div>
                 </div class="form-group">
                     <label> Showtime </label>
-                    <input type="text" name="showtime" class="form-control" value="12:00 a.m." disabled>
+                    <input type="text" name="showtime" class="form-control" value="<?php echo $_SESSION['showtime']; ?>" disabled>
                 </div>
                 <div class="form-group">
                     <label> Theatre </label>
-                    <input type="text" name="theatre" class="form-control" value="Chunema" disabled>
+                    <input type="text" name="theatre" class="form-control" value="<?php echo $_SESSION['theatre'];; ?>" disabled>
                 </div>
                 <div class="form-group">
                     <label> Seats </label>
@@ -147,7 +124,6 @@ foreach ($seatreserved_id as $item){
                     <button>Cancel</button>   
                 </div>
             </form>     
->>>>>>> 1d2030771913e895e5b3cbc5693cf341086e5490
         </div>
     </section>
 
