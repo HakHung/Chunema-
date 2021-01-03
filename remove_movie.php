@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
 
         .head-title{
-            background-color: grey; 
+            background-color : black; 
             text-align: center;
         }
 
