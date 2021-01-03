@@ -1,4 +1,3 @@
-
 <?php
 // Initialize the session
 session_start();
@@ -17,23 +16,26 @@ $seatreserved_id = $_SESSION['seat_list'];
 <html>
 
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>Cart</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-        body{ 
+        body {
             background: url('images/uploads/ft-bg.jpg') no-repeat;
             font: 14px sans-serif;
             background-color: black;
         }
+
         section {
             background-color: black;
             padding: 60px;
         }
-        .wrapper{ 
-            width: 350px; 
-            padding: 20px; 
+
+        .wrapper {
+            width: 350px;
+            padding: 20px;
         }
+
         footer {
             position: static;
             bottom: 0;
@@ -41,33 +43,38 @@ $seatreserved_id = $_SESSION['seat_list'];
             color: lightblue;
             text-align: center;
         }
+
         footer {
             background: url('images/uploads/ft-bg.jpg') no-repeat;
             background-position: center;
         }
-        h2{
+
+        h2 {
             color: gold;
             padding-bottom: 10px;
         }
-        label{
+
+        label {
             color: yellow;
             padding-bottom: 10px;
         }
-        p{
+
+        p {
             color: white;
             padding-bottom: 10px;
         }
     </style>
 </head>
 
-    <!-- BEGIN | Header -->
+<!-- BEGIN | Header -->
+
 <body>
     <header class="header">
         <nav id="navbar" class="navbar navbar-dark bg-transparent">
             <div class="container-fluid">
                 <!-- <div class="navbar-header"> -->
                 <a name="top" href="dashboard.php"><img class="logo" src="images/logo1.png" alt="Chunema" width="200" height="90"></a>
-                <!-- </div> --> 
+                <!-- </div> -->
                 <ul class="nav navbar-nav navbar-right" style="margin-right: 30px;">
                     <?php if (isset($_SESSION['username'])) : ?>
                         <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">
@@ -92,63 +99,30 @@ $seatreserved_id = $_SESSION['seat_list'];
     <!-- END | Header -->
 
 
-    <section clas="item">    
-        <div class="wrapper">
-            <h2>Purchase Details</h2>
-<<<<<<< HEAD
-            <?php
-foreach ($seatreserved_id as $item){
-    echo $item;
-}
- $stmt = $pdo->prepare("SELECT * FROM payment WHERE user_id = '$userid'");
- $stmt->execute();
- $number_row  = $stmt->rowCount();
- $counter = 1;
- $color = '';
- $color = "style='background-color :  #acc5f3';";
- $size = "width=100%;";
-  echo "<table $color $size> ";
-  echo "<tr><th>Ticket</th><th>Total</th></tr>";
-
-  // set the resulting array to associative
- while ($row = $stmt->fetch()) {
-     //  echo "price: " . $row["price"];
-
- // echo "<table $color>";
- echo "<tr ><td >" . $row['purchase']. "</td><td>" . $row["price"]. "</td></tr>";
-}
- echo "<tr ><td></td><td></td></tr></table>";
-?>
-  <br>
-    <button>Proceed to payment</button>
-    <button>Cancel</button>
-
-            
-=======
-            <form method="post">
-                <div class="form-group">
-                    <label> Moviename </label>
-                    <input type="text" name="moviename" class="form-control" value="Wonder Woman" disabled>
-                </div>
-                </div class="form-group">
-                    <label> Showtime </label>
-                    <input type="text" name="showtime" class="form-control" value="12:00 a.m." disabled>
-                </div>
-                <div class="form-group">
-                    <label> Theatre </label>
-                    <input type="text" name="theatre" class="form-control" value="Chunema" disabled>
-                </div>
-                <div class="form-group">
-                    <label> Seats </label>
-                    <input type="text" name="seats" class="form-control" value="S1, S2" disabled>
-                </div>
-                <div class="form-group">
-                    <button>Proceed to payment</button>
-                    <button>Cancel</button>   
-                </div>
-            </form>     
->>>>>>> 1d2030771913e895e5b3cbc5693cf341086e5490
-        </div>
+    <section clas="item">
+        <h2>Purchase Details</h2>
+        <form method="post">
+            <div class="form-group">
+                <label> Moviename </label>
+                <input type="text" name="moviename" class="form-control" value="Wonder Woman" disabled>
+            </div>
+            </div class="form-group">
+            <label> Showtime </label>
+            <input type="text" name="showtime" class="form-control" value="12:00 a.m." disabled>
+            </div>
+            <div class="form-group">
+                <label> Theatre </label>
+                <input type="text" name="theatre" class="form-control" value="Chunema" disabled>
+            </div>
+            <div class="form-group">
+                <label> Seats </label>
+                <input type="text" name="seats" class="form-control" value="S1, S2" disabled>
+            </div>
+            <div class="form-group">
+                <button>Proceed to payment</button>
+                <button>Cancel</button>
+            </div>
+        </form>
     </section>
 
     <footer id="footer">
@@ -204,29 +178,27 @@ foreach ($seatreserved_id as $item){
                 <p><a href="#top" id="back-to-top">Back to top <i class="ion-ios-arrow-thin-up"></i></a></p>
             </div>
         </div>
-    </footer>   
-                <!--<?php
-                $stmt = $pdo->prepare("SELECT * FROM payment");
-                $stmt->execute();
-                $number_row  = $stmt->rowCount();
-                $counter = 1;
-                $color = '';
-                $color = "style='background-color :  #acc5f3';";
-                $size = "width=100%;";
-                echo "<table $color $size> ";
-                echo "<tr><th>Ticket</th><th>Total</th></tr>";
+    </footer>
+    <!--<?php
+        $stmt = $pdo->prepare("SELECT * FROM payment");
+        $stmt->execute();
+        $number_row  = $stmt->rowCount();
+        $counter = 1;
+        $color = '';
+        $color = "style='background-color :  #acc5f3';";
+        $size = "width=100%;";
+        echo "<table $color $size> ";
+        echo "<tr><th>Ticket</th><th>Total</th></tr>";
 
-                // set the resulting array to associative
-                while ($row = $stmt->fetch()) {
-                    //  echo "price: " . $row["price"];
+        // set the resulting array to associative
+        while ($row = $stmt->fetch()) {
+            //  echo "price: " . $row["price"];
 
-                // echo "<table $color>";
-                echo "<tr ><td >" . $row['purchase']. "</td><td>" . $row["price"]. "</td></tr>";
-                }
-                echo "<tr ><td></td><td></td></tr></table>";
-                ?><br> -->    
+            // echo "<table $color>";
+            echo "<tr ><td >" . $row['purchase'] . "</td><td>" . $row["price"] . "</td></tr>";
+        }
+        echo "<tr ><td></td><td></td></tr></table>";
+        ?><br> -->
 </body>
 
 </html>
-
-
