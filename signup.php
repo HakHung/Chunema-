@@ -139,6 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         body{ 
             background: url('images/uploads/ft-bg.jpg') no-repeat;
             font: 14px sans-serif; 
+            background-color: black;
         }
         section {
             background-color: black;
