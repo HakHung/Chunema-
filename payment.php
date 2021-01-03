@@ -5,20 +5,16 @@ session_start();
 
 // Include config file
 require_once "config.php";
-
+$total_price = $_SESSION['total_price'];
+    echo $_SESSION['total_price'];
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $total_price =0;
-
+    
     $seat_lists = $_SESSION['seat_list'];
-    foreach($seat_lists as $seat_list){
-        $total_price += 8.5;
-    }
+   
 
-    echo $total_price;
+    
     $date = date("Y/m/d");
     $userid = $_SESSION['id'];
-    echo implode(",",$seat_lists);
-    echo $date; echo $userid;
     // insert new row data to payment table
     $sql = "INSERT INTO payment(user_id, date, price, purchase) VALUES (:userid, :date, :price,'0')";
 
@@ -45,8 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
 
 
-    echo $payment_id;
-    echo $_SESSION['screeningid'];
+    
     //insert new data into seat_reserved table
     $seat_id_list = [];
     foreach ($seat_lists as $item) {
