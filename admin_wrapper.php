@@ -9,7 +9,12 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style type="text/css">
      
-    
+     body {
+            font: 14px sans-serif;
+            /* background: url('images/uploads/ft-bg.jpg') no-repeat; */
+            background-color: yellow;
+        }
+        
     #tab-bar{
         padding-top: 30px;
         display: flex;

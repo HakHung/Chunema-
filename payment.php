@@ -211,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <div class='col-md-12'>
                         <div class='form-control total btn btn-info'>
                         Total:
-                        <span class='amount'>$300</span>
+                        <span class='amount'>RM <?php echo $total_price;?></span>
                         </div>
                     <br>
                     </div>

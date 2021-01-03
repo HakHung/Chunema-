@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
 
         .head-title {
-            background-color: yellow;
+            background-color: black;
             text-align: center;
         }
 
