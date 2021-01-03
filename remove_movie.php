@@ -18,11 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
              $stmt_2->execute();
              while ($row = $stmt_2->fetch()) {
                 $screeningid =$row['screening_id'];
-                $sql_3 = "DELETE FROM seat WHERE screening_id = '$screeningid'";
-                $stmt_3 = $pdo->prepare($sql_3);
                 $sql_4 = "DELETE FROM seat_reserved WHERE screening_id = '$screeningid'";
                 $stmt_4 = $pdo->prepare($sql_4);
-                if($stmt_3->execute() && $stmt_4->execute()){
+                if( $stmt_4->execute()){
                     $checksum = true;
                 }
              }
