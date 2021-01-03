@@ -7,7 +7,8 @@ session_start();
 // Include config file
 require_once "config.php";
 
-   
+$userid = $_SESSION['id'];
+$seatreserved_id = $_SESSION['seat_list'];
 
 
 ?>
@@ -17,7 +18,7 @@ require_once "config.php";
 
 <head>
 <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Cart</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
         body{ 
@@ -94,9 +95,11 @@ require_once "config.php";
         <div class="wrapper">
             <h2>Purchase Details</h2>
             <?php
-
-$stmt = $pdo->prepare("SELECT * FROM payment");
-$stmt->execute();
+foreach ($seatreserved_id as $item){
+    echo $item;
+}
+ $stmt = $pdo->prepare("SELECT * FROM payment WHERE user_id = '$userid'");
+ $stmt->execute();
  $number_row  = $stmt->rowCount();
  $counter = 1;
  $color = '';

@@ -15,67 +15,71 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // if(empty(trim($_POST["display"]))){
     $seating_err = "Please choose your seat to proceed!";
   } else {
-    $items = preg_split("/[\s,]+/", $seat_id_list);
-    $price = (float)filter_input(INPUT_POST, 'price');
-    $date = date("Y/m/d");
 
-    // insert new row data to payment table
-    $sql = "INSERT INTO payment(user_id, date, price, purchase) VALUES ('1', :date, :price,'0')";
-
-
-    if ($stmt = $pdo->prepare($sql)) {
-      // Bind variables to the prepared statement as parameters
-      $stmt->bindParam(":date", $param_date, PDO::PARAM_STR);
-      $stmt->bindParam(":price", $param_price, PDO::PARAM_STR);
+    $_SESSION['seat_list'] = preg_split("/[\s,]+/", $seat_id_list);
+    header("location:payment.php");
+    // $items = preg_split("/[\s,]+/", $seat_id_list);
+    // $date = date("Y/m/d");
+    // $userid = $_SESSION['id'];
+    // // insert new row data to payment table
+    // $sql = "INSERT INTO payment(user_id, date, price, purchase) VALUES (:userid, :date, :price,'0')";
 
 
-      // Set parameters
-      $param_date = $date;
-      $param_price = $price;
+    // if ($stmt = $pdo->prepare($sql)) {
+    //   // Bind variables to the prepared statement as parameters
+    //   $stmt->bindParam(":date", $param_date, PDO::PARAM_STR);
+    //   $stmt->bindParam(":price", $param_price, PDO::PARAM_STR);
+    //   $stmt->bindParam(":price", $param_price, PDO::PARAM_STR);
+
+    //   // Set parameters
+    //   $param_date = $date;
+    //   $param_price = $price;
 
 
-      if ($stmt->execute()) {
-        // Redirect to login page
-        echo "Result updated";
-        $payment_id = $pdo->lastInsertId();
-      } else {
-        echo "Something went wrong. Please try again later.";
-      }
-    }
+    //   if ($stmt->execute()) {
+    //     // Redirect to login page
+    //     echo "Result updated";
+    //     $payment_id = $pdo->lastInsertId();
+    //   } else {
+    //     echo "Something went wrong. Please try again later.";
+    //   }
+
+    
+    // }
 
 
     // echo $payment_id;
 
     //insert new data into seat_reserved table
-    foreach ($items as $item) {
-      // echo $item;
-      $sql = "SELECT seat_id FROM seat WHERE seat_no = '$item' and screening_id= '1'";
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute();
+    // foreach ($items as $item) {
+    //   // echo $item;
+    //   $sql = "SELECT seat_id FROM seat WHERE seat_no = '$item' and screening_id= '1'";
+    //   $stmt = $pdo->prepare($sql);
+    //   $stmt->execute();
 
 
-      while ($row = $stmt->fetch()) {
+    //   while ($row = $stmt->fetch()) {
 
-        $sql_1 = "INSERT INTO seat_reserved(seat_id, screening_id, payment_id) VALUES ( :seat_id ,'1', :payment_id)";
-        if ($stmt_1 = $pdo->prepare($sql_1)) {
-          // Bind variables to the prepared statement as parameters
-          $stmt_1->bindParam(":seat_id", $param_item, PDO::PARAM_STR);
-          $stmt_1->bindParam(":payment_id", $param_payment_id, PDO::PARAM_STR);
+    //     $sql_1 = "INSERT INTO seat_reserved(seat_id, screening_id, payment_id) VALUES ( :seat_id ,'1', :payment_id)";
+    //     if ($stmt_1 = $pdo->prepare($sql_1)) {
+    //       // Bind variables to the prepared statement as parameters
+    //       $stmt_1->bindParam(":seat_id", $param_item, PDO::PARAM_STR);
+    //       $stmt_1->bindParam(":payment_id", $param_payment_id, PDO::PARAM_STR);
 
 
-          // Set parameters
-          $param_item = $row['seat_id'];
-          $param_payment_id = $payment_id;
+    //       // Set parameters
+    //       $param_item = $row['seat_id'];
+    //       $param_payment_id = $payment_id;
 
-          if ($stmt_1->execute()) {
+    //       if ($stmt_1->execute()) {
 
-            echo "Result updated";
-          } else {
-            echo "Something went wrong. Please try again later.";
-          }
-        }
-      }
-    }
+    //         echo "Result updated";
+    //       } else {
+    //         echo "Something went wrong. Please try again later.";
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
 
@@ -220,7 +224,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $threatre = $_SESSION['theatre'];
     ?>
     <h1><?php echo $user['moviename']; ?></h1>
-    <h4><?php echo $threatre .  "&nbsp" . $_SESSION["date"]; ?></h4>
+    <h4>Threatre: <?php echo "&nbsp" .$threatre ; ?></h4>
+    <h4>Date: <?php 
+      $screening_date =$_SESSION["date"];
+     echo "&nbsp" . $screening_date ;
+     ?></h4>
+    <h4>Show Time: <?php echo " ". $_SESSION["showtime"]; ?></h4>
   </div>
   <!-- end of movie title -->
   <?php
@@ -228,6 +237,19 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
   $stmt->execute();
   $user = $stmt->fetch();
   $threatreid = $user['threatre_id'];
+  $_SESSION['threatre_id'] = $threatreid;
+  $showtime = $_SESSION['showtime'];
+  ?>
+
+
+
+<?php
+  $stmt = $pdo->prepare("SELECT screening_id FROM screening WHERE movie_id = '$movieid' AND threatre_id = '$threatreid' AND show_time = '$showtime'");
+  $stmt->execute();
+  $user = $stmt->fetch();
+  $screeningid = $user['screening_id'];
+  $_SESSION['screeningid'] =  $screeningid;
+  echo $screeningid;
   ?>
 
   <div style="text-align:center">
@@ -252,34 +274,22 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
       <div class="threatre">
         <div class="screen">Screen</div>
+          
 
-        <h3>Show Time</h3>
-        <div class="form-group">
-          <label for="sel1">Select One:</label>
-          <select class="form-control" name="show">
-            <?php
 
-            $stmt1 = $pdo->prepare("SELECT * FROM screening WHERE movie_id=$movieid AND threatre_id='$threatreid'");
-            $stmt1->execute();
-            while ($row = $stmt1->fetch()) {
-            ?>
-              <option value="<?php echo $row['show_time']; ?>"><?php echo $row['show_time']; ?></option>
-            <?php
-            }; ?>
-          </select>
           <br><br>
         </div>
         <!-- <form method="post" action="seat_selection.php"> -->
         <?php
 
-        $stmt_1 = $pdo->prepare("SELECT * FROM seat WHERE screening_id =1");
+        $stmt_1 = $pdo->prepare("SELECT * FROM seat WHERE screening_id = $screeningid");
         $stmt_1->execute();
 
 
         $number_row  = $stmt_1->rowCount();
         $counter = 1;
         while ($row_1 = $stmt_1->fetch()) {
-          $stmt_2 = $pdo->prepare("SELECT seat_id FROM seat_reserved WHERE screening_id = 1");
+          $stmt_2 = $pdo->prepare("SELECT seat_id FROM seat_reserved WHERE screening_id = $screeningid AND screening_date = '$screening_date'");
           $stmt_2->execute();
 
           $occupied_bool = false;
@@ -289,12 +299,19 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
           }
 
           while ($row_2 = $stmt_2->fetch()) {
-            if ($row_2["seat_id"] == $row_1["seat_id"]) {
-              $occupied_bool = true;
-              break;
+            $items = preg_split("/[\s,]+/", $row_2["seat_id"]);
+            foreach($items as $item){
+        
+              if ($item == $row_1["seat_id"]) {
+                  $occupied_bool = true;
+                  break;
+                }
             }
           }
-
+//  if ($row_2["seat_id"] == $row_1["seat_id"]) {
+//               $occupied_bool = true;
+//               break;
+//             }
 
           if ($occupied_bool) {
             echo "<div class='seat occupied' id='{$row_1['seat_no']}'>" . $row_1["seat_no"] . "</div>\n";
@@ -349,11 +366,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       let seat_select = document.getElementById(id);
       let display_scr = document.getElementById("display");
       let seat_count = document.getElementById("count");
-      let total_price = document.getElementById("price");
+      // let total_price = document.getElementById("price");
       if (seat_select.classList.contains("selected")) {
         seat_select.classList.remove("selected");
         seat_count.value = parseInt(seat_count.value) - 1;
-        total_price.value = parseFloat(total_price.value) - 8.5
+        // total_price.value = parseFloat(total_price.value) - 8.5
         var index = seat_sel.indexOf(id);
 
         if (index > -1) {
@@ -364,9 +381,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       } else {
         seat_select.classList.add("selected");
         seat_count.value = parseInt(seat_count.value) + 1;
-        total_price.value = parseFloat(total_price.value) + 8.5;
+        // total_price.value = parseFloat(total_price.value) + 8.5;
         seat_sel[seat_sel.length] = id;
-        console.log(seat_sel);
+
         display_scr.value = seat_sel;
       }
     }

@@ -2,7 +2,7 @@
 
 require_once "config.php";
 $error_msg ="";
-
+$checksum = false;
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     if(!empty( $_POST['movie_remove'])){
@@ -11,11 +11,29 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         foreach ($movies_id as $movie_id) {
              $sql = "DELETE FROM movielist WHERE movieid = $movie_id";
              $stmt = $pdo->prepare($sql);
-             if ($stmt->execute()) {
+             $sql_1 = "DELETE FROM screening WHERE movie_id = $movie_id";
+             $stmt_1 = $pdo->prepare($sql_1);
+             $sql_2 = "SELECT screening_id FROM screening WHERE movie_id = $movie_id ";
+             $stmt_2 = $pdo->prepare($sql_2);
+             $stmt_2->execute();
+             while ($row = $stmt_2->fetch()) {
+                $screeningid =$row['screening_id'];
+                $sql_3 = "DELETE FROM seat WHERE screening_id = '$screeningid'";
+                $stmt_3 = $pdo->prepare($sql_3);
+                $sql_4 = "DELETE FROM seat_reserved WHERE screening_id = '$screeningid'";
+                $stmt_4 = $pdo->prepare($sql_4);
+                if($stmt_3->execute() && $stmt_4->execute()){
+                    $checksum = true;
+                }
+             }
+             if ($stmt->execute() && $stmt_1->execute() && $checksum) {
                 echo "<script>alert('Data deleted');window.location.href='admin_wrapper.php';</script>";
             } else {
                 echo "Something went wrong. Please try again later.";
             }
+
+
+
         }
 
     }else{

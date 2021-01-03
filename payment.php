@@ -1,3 +1,99 @@
+<?php
+// Initialize the session
+session_start();
+
+
+// Include config file
+require_once "config.php";
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $total_price =0;
+
+    $seat_lists = $_SESSION['seat_list'];
+    foreach($seat_lists as $seat_list){
+        $total_price += 8.5;
+    }
+
+    echo $total_price;
+    $date = date("Y/m/d");
+    $userid = $_SESSION['id'];
+    echo implode(",",$seat_lists);
+    echo $date; echo $userid;
+    // insert new row data to payment table
+    $sql = "INSERT INTO payment(user_id, date, price, purchase) VALUES (:userid, :date, :price,'0')";
+
+
+    if ($stmt = $pdo->prepare($sql)) {
+      // Bind variables to the prepared statement as parameters
+      $stmt->bindParam(":date", $param_date, PDO::PARAM_STR);
+      $stmt->bindParam(":price", $param_price, PDO::PARAM_STR);
+      $stmt->bindParam(":userid", $param_userid, PDO::PARAM_STR);
+
+      // Set parameters
+      $param_date = $date;
+      $param_price = $total_price;
+      $param_userid = $userid;
+
+
+      if ($stmt->execute()) {
+        echo "Result updated";
+        $payment_id = $pdo->lastInsertId();
+      } else {
+        echo "Something went wrong. Please try again later.";
+      }
+
+        }
+
+
+    echo $payment_id;
+    echo $_SESSION['screeningid'];
+    //insert new data into seat_reserved table
+    $seat_id_list = [];
+    foreach ($seat_lists as $item) {
+      // echo $item;
+      $screeningid = $_SESSION['screeningid'];
+      $sql = "SELECT seat_id FROM seat WHERE seat_no = '$item' and screening_id= '$screeningid'";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute();
+      $row = $stmt->fetch();
+      array_push($seat_id_list, $row['seat_id']);
+      
+        
+       
+      
+    }
+    $sql_1 = "INSERT INTO seat_reserved(seat_id, screening_id,screening_date, payment_id) VALUES ( :seat_id , :screening_id,:screening_date, :payment_id)";
+        if ($stmt_1 = $pdo->prepare($sql_1)) {
+          // Bind variables to the prepared statement as parameters
+          $stmt_1->bindParam(":seat_id", $param_seatid, PDO::PARAM_STR);
+          $stmt_1->bindParam(":screening_id", $param_screeningid, PDO::PARAM_STR);
+          $stmt_1->bindParam(":screening_date", $param_screeningdate, PDO::PARAM_STR);
+          $stmt_1->bindParam(":payment_id", $param_payment_id, PDO::PARAM_STR);
+
+
+          // Set parameters
+          $param_seatid = implode(",", $seat_id_list);
+          $param_screeningid = $screeningid;
+          $param_screeningdate = $date;
+          $param_payment_id = $payment_id;
+
+          if ($stmt_1->execute()) {
+            header("location: dashboard.php");
+            echo "Result updated";
+          } else {
+            echo "Something went wrong. Please try again later.";
+          }
+        }
+  
+}
+
+
+// $conn->close();
+// exit();
+
+?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -87,7 +183,7 @@
                     <h1 style="text-align: center;">Payment</h1>
                     <br>
                 <script src='https://js.stripe.com/v2/' type='text/javascript'></script>
-                <form accept-charset="UTF-8" action="/" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="pk_bQQaTxnaZlzv4FnnuZ28LFHccVSaj" id="payment-form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓" /><input name="_method" type="hidden" value="PUT" /><input name="authenticity_token" type="hidden" value="qLZ9cScer7ZxqulsUWazw4x3cSEzv899SP/7ThPCOV8=" /></div>
+                <form accept-charset="UTF-8" action="" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="pk_bQQaTxnaZlzv4FnnuZ28LFHccVSaj" id="payment-form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓" /><input name="_method" type="hidden" value="PUT" /><input name="authenticity_token" type="hidden" value="qLZ9cScer7ZxqulsUWazw4x3cSEzv899SP/7ThPCOV8=" /></div>
                     <div class='form-row'>
                     <div class='col-xs-12 form-group required'>
                         <label class='control-label'>Name on Card</label>

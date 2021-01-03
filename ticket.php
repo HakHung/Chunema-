@@ -13,11 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
    $option = isset($_POST['datepicker']) ? $_POST['datepicker'] : false;
    $_SESSION["theatre"] = $_POST['theatre'];
    $_SESSION["date"] = $_POST['datepicker'];
+
    if ($option) {
       // $date = $_POST['datepicker'];
       // echo $date;
 
-      header("location:movie_seat.php");
+      header("location:showtime.php");
    } else {
       $date_err = "Please select a date";
    }
@@ -60,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
    <!-- movie title  -->
    <div class="movie-title">
       <?php $movieid = $_GET["myid"];
+
       $_SESSION["movieid"] = $movieid;
       $stmt = $pdo->prepare("SELECT moviename FROM movielist WHERE movieid=$movieid");
       $stmt->execute();
