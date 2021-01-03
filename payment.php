@@ -47,7 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     foreach ($seat_lists as $item) {
       // echo $item;
       $screeningid = $_SESSION['screeningid'];
-      $sql = "SELECT seat_id FROM seat WHERE seat_no = '$item' and screening_id= '$screeningid'";
+      $threatreid = $_SESSION['threatre_id'];
+      $sql = "SELECT seat_id FROM seat WHERE seat_no = '$item' and threatre_id= '$threatreid'";
       $stmt = $pdo->prepare($sql);
       $stmt->execute();
       $row = $stmt->fetch();
