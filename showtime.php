@@ -50,6 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       h1 {
          color: gold;
       }
+
+      input{
+         background-color: blue;
+      }
+
    </style>
 
 </head>
@@ -91,13 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <?php
             }; ?>
           </select>
-         
-
-
-          <br><br>
         </div>
-        
-
          <input type="submit" value="Next"></input>
       </form>
    </div>

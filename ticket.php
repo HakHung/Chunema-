@@ -53,6 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       h1 {
          color: gold;
       }
+
+      input{
+         background-color: blue;
+      }
    </style>
 
 </head>
@@ -93,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <span class="help-block"><?php echo $date_err; ?></span>
          </div>
 
-         <input type="submit" value="Next"></input>
+         <input class="next" type="submit" value="Next"></input>
       </form>
    </div>
 </body>
