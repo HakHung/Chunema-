@@ -74,6 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
 
         .head-title {
+<<<<<<< HEAD
+=======
+            background-color: black;
+>>>>>>> 4a157fe294d116c8daf2d487567e9b766b1d8656
             text-align: center;
         }
 
