@@ -277,6 +277,11 @@ https://flickity.metafizzy.co
             transform: translate(-50%, -50%);
         }
 
+        .text{
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
         .inner1 a:hover,
         .inner2 a:hover {
             width: 75px;
@@ -363,10 +368,10 @@ https://flickity.metafizzy.co
                     <div class="carouselImage" style="background-size:cover;">
                         <img src=<?php echo $row['path']; ?> >
                         <div class="inner1">
-                            <a href="single.php ? myid= <?php echo $row['movieid']; ?>"> Read more</a>
+                            <a class="text" href="single.php ? myid= <?php echo $row['movieid']; ?>"> Read more</a>
                         </div>
                         <div class="inner2">
-                            <a href="ticket.php ? myid= <?php echo $row['movieid']; ?>"> Book Now!</a>
+                            <a class="text" href="ticket.php ? myid= <?php echo $row['movieid']; ?>"> Book Now!</a>
                         </div>
                     </div>
                 <?php
