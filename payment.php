@@ -6,7 +6,7 @@ session_start();
 // Include config file
 require_once "config.php";
 $total_price = $_SESSION['total_price'];
-    echo $_SESSION['total_price'];
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     
     $seat_lists = $_SESSION['seat_list'];
@@ -86,9 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 // $conn->close();
 // exit();
-
-?>
-
 
 ?>
 
@@ -211,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <div class='col-md-12'>
                         <div class='form-control total btn btn-info'>
                         Total:
-                        <span class='amount'>$300</span>
+                        <span class='amount'>RM <?php echo $total_price;?></span>
                         </div>
                     <br>
                     </div>

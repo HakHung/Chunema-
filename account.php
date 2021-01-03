@@ -1,3 +1,9 @@
+<?php
+session_start();
+
+require_once ('config.php');
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,6 +19,7 @@
         body {
             background: url('images/uploads/ft-bg.jpg') no-repeat;
             font: 14px sans-serif;
+            height:50%;
         }
 
         section {

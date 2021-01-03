@@ -104,7 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
     <section clas="item">    
-        <div class="wrapper">
             <h2>Purchase Details</h2>
             <form method="post">
             <?php
@@ -112,7 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $stmt = $pdo->prepare("SELECT moviename FROM movielist WHERE movieid=$movieid");
             $stmt->execute([$movieid]);
             $user = $stmt->fetch();
-            echo $user['moviename'];    
             ?>
                 <div class="form-group">
                     <label> Moviename </label>
@@ -121,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </div class="form-group">
                     <label> Showtime </label>
                     <input type="text" name="showtime" class="form-control" value="<?php echo $_SESSION['showtime']; ?>" readonly>
-                </div>
+                </div><br>
                 <div class="form-group">
                     <label> Theatre </label>
                     <input type="text" name="theatre" class="form-control" value="<?php echo $_SESSION['theatre'];; ?>" readonly>
@@ -147,7 +145,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     <button>Cancel</button>   
                 </div>
             </form>     
-        </div>
     </section>
 
     <footer id="footer">
