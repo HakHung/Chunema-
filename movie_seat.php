@@ -10,8 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
   $seat_id_list = filter_input(INPUT_POST, 'display');
   if (empty($seat_id_list)) {
-    // echo "Please choose your seat to proceed!<br>";
-    // if(empty(trim($_POST["display"]))){
     $seating_err = "Please choose your seat to proceed!";
   } else {
 
@@ -178,12 +176,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
 <?php
-  $stmt = $pdo->prepare("SELECT screening_id FROM screening WHERE movie_id = '$movieid' AND threatre_id = '$threatreid' AND show_time = '$showtime'");
+  $stmt = $pdo->prepare("SELECT screening_id FROM screening WHERE movie_id = '$movieid' AND 
+  threatre_id = '$threatreid' AND show_time = '$showtime'");
   $stmt->execute();
   $user = $stmt->fetch();
   $screeningid = $user['screening_id'];
   $_SESSION['screeningid'] =  $screeningid;
-  echo $screeningid;
+  
   ?>
 
   <div style="text-align:center">
@@ -243,10 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 }
             }
           }
-//  if ($row_2["seat_id"] == $row_1["seat_id"]) {
-//               $occupied_bool = true;
-//               break;
-//             }
+
 
           if ($occupied_bool) {
             echo "<div class='seat occupied' id='{$row_1['seat_no']}'>" . $row_1["seat_no"] . "</div>\n";
@@ -261,6 +257,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
           $counter += 1;
         }
+        unset($stmt);
         unset($stmt_1);
         unset($stmt_2);
         unset($pdo);

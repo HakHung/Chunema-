@@ -227,8 +227,17 @@ $userid = $_SESSION['id'];
                 echo "<td class='table-data'> RM " . $row['price'] . "</td>\n";
 
                 echo "</tr>";
+
+
             }
 
+                unset($stmt);
+                unset($stmt_1);
+                unset($stmt_2);
+                unset($stmt_3);
+                unset($stmt_4);
+                unset($stmt_5);
+                unset($pdo);
             ?>
         </table>
     </div>

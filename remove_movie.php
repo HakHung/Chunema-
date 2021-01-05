@@ -11,11 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         foreach ($movies_id as $movie_id) {
              $sql = "DELETE FROM movielist WHERE movieid = $movie_id";
              $stmt = $pdo->prepare($sql);
+             
              $sql_1 = "DELETE FROM screening WHERE movie_id = $movie_id";
              $stmt_1 = $pdo->prepare($sql_1);
              $sql_2 = "SELECT screening_id FROM screening WHERE movie_id = $movie_id ";
              $stmt_2 = $pdo->prepare($sql_2);
              $stmt_2->execute();
+             $number_row  = $stmt_2->rowCount();
              while ($row = $stmt_2->fetch()) {
                 $screeningid =$row['screening_id'];
                 $sql_4 = "DELETE FROM seat_reserved WHERE screening_id = '$screeningid'";
@@ -24,10 +26,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     $checksum = true;
                 }
              }
-             if ($stmt->execute() && $stmt_1->execute() && $checksum) {
+             if($number_row == 0){
+                 $checksum = true;
+             }
+             
+             if ($stmt->execute() && $checksum) {
+                 if($number_row > 0){
+                     $stmt_1->execute();
+                 }
                 echo "<script>alert('Data deleted');window.location.href='admin_wrapper.php';</script>";
             } else {
-                echo "Something went wrong. Please try again later.";
+                echo "Something went wrong. Please try again later.";echo $checksum;
             }
 
 
@@ -37,6 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }else{
         $error_msg = "Please choose at least one movie to be deleted.";
     }
+    unset($stmt);
+    unset($stmt_1);
+    unset($stmt_2);
+    unset($stmt_4);
+    unset($pdo);
    
 }
 

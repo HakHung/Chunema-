@@ -91,7 +91,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             ?>
               <option value="<?php echo $row['show_time']; ?>"><?php echo $row['show_time']; ?></option>
             <?php
-            }; ?>
+            }; 
+            
+            unset($stmt);
+            unset($stmt1);
+            unset($pdo);
+            ?>
           </select>
         </div>
          <input type="submit" value="Next"></input>

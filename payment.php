@@ -38,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         echo "Something went wrong. Please try again later.";
       }
 
-        }
+     
+}
 
 
     
@@ -58,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
        
       
     }
-    $sql_1 = "INSERT INTO seat_reserved(seat_id, screening_id,screening_date, payment_id) VALUES ( :seat_id , :screening_id,:screening_date, :payment_id)";
+    $sql_1 = "INSERT INTO seat_reserved(seat_id, screening_id,screening_date, payment_id) 
+    VALUES ( :seat_id , :screening_id,:screening_date, :payment_id)";
         if ($stmt_1 = $pdo->prepare($sql_1)) {
           // Bind variables to the prepared statement as parameters
           $stmt_1->bindParam(":seat_id", $param_seatid, PDO::PARAM_STR);
@@ -83,7 +85,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
   
 }
 
-
+        unset($stmt);
+        unset($stmt_1);
+        unset($pdo);
 // $conn->close();
 // exit();
 
