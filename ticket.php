@@ -11,14 +11,22 @@ if (!isset($_SESSION['username'])) {
 $date_err = "";
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
    $option = isset($_POST['datepicker']) ? $_POST['datepicker'] : false;
-   $_SESSION["theatre"] = $_POST['theatre'];
+   $theatre = $_SESSION["theatre"] = $_POST['theatre'];
    $_SESSION["date"] = $_POST['datepicker'];
+   $id = $_SESSION['movieid'];
+   $stmt = $pdo->prepare("SELECT threatre_id FROM threatre WHERE threatre.name = '$theatre'");
+   $stmt->execute();
+   $user = $stmt->fetch();
+   $threatreid = $user['threatre_id'];
 
    if ($option) {
-      // $date = $_POST['datepicker'];
-      // echo $date;
-
-      header("location:showtime.php");
+      $stmt1 = $pdo->prepare("SELECT * FROM screening WHERE movie_id=$id AND threatre_id=$threatreid");
+      $stmt1->execute();
+      if($stmt1->rowCount() == 0){
+         echo "<script>alert('Invalid screening time. Please try again');</script>";
+      }else{
+         header("location:showtime.php");
+      }
    } else {
       $date_err = "Please select a date";
    }
@@ -34,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
    <title>Movie Seat Selection</title>
    <style>
@@ -54,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
          color: gold;
       }
 
-      input{
+      input {
          background-color: blue;
       }
    </style>

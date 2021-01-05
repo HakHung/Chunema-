@@ -12,9 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
    
    $_SESSION["showtime"] = $_POST['show'];
    if ($option) {
-      // $date = $_POST['datepicker'];
-      // echo $date;
-
       header("location:movie_seat.php");
    } else {
       $date_err = "Please select a showtime";

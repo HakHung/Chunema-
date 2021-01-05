@@ -154,6 +154,7 @@ require_once "config.php";
                 //echo $id;
                 $stmt = $pdo->prepare("SELECT * FROM movielist WHERE movieid=$id");
                 $stmt->execute();
+                $_SESSION['movieid'] = $id;
                 while ($row = $stmt->fetch()) {
                 ?>
                     <img src=<?php echo $row['path']; ?> alt="" widht="350" height="480">

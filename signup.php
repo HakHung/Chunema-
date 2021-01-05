@@ -6,6 +6,7 @@ require_once "config.php";
 $username = $password = $confirm_password = $email = "";
 $username_err = $password_err = $confirm_password_err = $email_err = "";
 
+
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -136,18 +137,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-        body{ 
+        body {
             background: url('images/uploads/ft-bg.jpg') no-repeat;
-            font: 14px sans-serif; 
+            font: 14px sans-serif;
             background-color: black;
         }
+
         section {
             background-color: black;
             padding: 40px;
         }
-        .wrapper{ 
-            width: 350px; padding: 20px; 
+
+        .wrapper {
+            width: 350px;
+            padding: 20px;
         }
+
         footer {
             position: static;
             bottom: 0;
@@ -155,35 +160,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: lightblue;
             text-align: center;
         }
+
         footer {
             background: url('images/uploads/ft-bg.jpg') no-repeat;
             background-position: center;
         }
-        h2{
+
+        h2 {
             color: gold;
         }
-        label{
+
+        label {
             color: yellow;
         }
-        p{
+
+        p {
             color: white;
         }
     </style>
 </head>
 
 <body>
-<header class="header">
+    <header class="header">
         <nav id="navbar" class="navbar navbar-dark bg-transparent">
             <div class="container-fluid">
-                <!-- <div class="navbar-header"> -->
                 <a name="top" href="dashboard.php"><img class="logo" src="images/logo1.png" alt="Chunema" width="200" height="90"></a>
-                <!-- </div> -->
                 </ul>
             </div>
         </nav>
     </header>
 
-    <section clas="item">    
+    <section clas="item">
         <div class="wrapper">
             <h2>Sign Up</h2>
             <p>Please fill this form to create an account.</p>
@@ -217,7 +224,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
-        <footer id="footer">
+    <footer id="footer">
         <div class="container fluid text-center text-md-left ">
             <div class="row">
                 <div class="col-md-2 mb-md-0 mb-2">
@@ -270,7 +277,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p><a href="#top" id="back-to-top">Back to top <i class="ion-ios-arrow-thin-up"></i></a></p>
             </div>
         </div>
-    </footer>    
+    </footer>
+
 </body>
 
 </html>

@@ -1,68 +1,121 @@
 <?php
-// Check existence of id parameter before processing further
-if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
-    // Include config file
-    require_once "config.php";
-    
-    // Prepare a select statement
-    $sql = "SELECT * FROM employees WHERE id = :id";
-    
-    if($stmt = $pdo->prepare($sql)){
-        // Bind variables to the prepared statement as parameters
-        $stmt->bindParam(":id", $param_id);
-        
-        // Set parameters
-        $param_id = trim($_GET["id"]);
-        
-        // Attempt to execute the prepared statement
-        if($stmt->execute()){
-            if($stmt->rowCount() == 1){
-                /* Fetch result row as an associative array. Since the result set
-                contains only one row, we don't need to use while loop */
-                $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                
-                // Retrieve individual field value
-                $name = $row["name"];
-                $address = $row["address"];
-                $salary = $row["salary"];
-            } else{
-                // URL doesn't contain valid id parameter. Redirect to error page
-                header("location: error.php");
-                exit();
-            }
-            
-        } else{
-            echo "Oops! Something went wrong. Please try again later.";
+
+session_start();
+
+// Include config file
+require_once "config.php";
+
+// Define variables and initialize with empty values
+$password = $confirm_password = "";
+$password_err = $confirm_password_err = "";
+$name = $_SESSION['username'];
+$userid = $_SESSION['id'];
+
+// Processing form data when form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Validate password
+    // Validate password strength
+    $uppercase = preg_match('@[A-Z]@', $_POST["password"]);
+    $lowercase = preg_match('@[a-z]@', $_POST["password"]);
+    $number    = preg_match('@[0-9]@', $_POST["password"]);
+    $specialChars = preg_match('@[^\w]@', $_POST["password"]);
+
+    if (empty(trim($_POST["password"]))) {
+        $password_err = "Please enter a password.";
+    } elseif (!$uppercase || !$lowercase || !$number || !$specialChars || strlen(trim($_POST["password"])) < 8) {
+        $password_err = "Password should be at least 8 characters in length and should include at least one uppercase letter, one number, and one special character.";
+    } else {
+        $password = trim($_POST["password"]);
+    }
+
+    // Validate confirm password
+    if (empty(trim($_POST["confirm_password"]))) {
+        $confirm_password_err = "Please confirm password.";
+    } else {
+        $confirm_password = trim($_POST["confirm_password"]);
+        if (empty($password_err) && ($password != $confirm_password)) {
+            $confirm_password_err = "Password did not match.";
         }
     }
-     
-    // Close statement
-    unset($stmt);
-    
+
+     // Check input errors before inserting in database
+    if (empty($password_err) && empty($confirm_password_err)) {
+        // Prepare an update statement
+        $sql = "UPDATE userdetails SET pasword=:password WHERE id='$userid'";
+
+        if ($stmt = $pdo->prepare($sql)) {
+            // Bind variables to the prepared statement as parameters
+            $stmt->bindParam(":password", $param_password, PDO::PARAM_STR);         
+
+            // Set parameters
+            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+
+            // Attempt to execute the prepared statement
+            if ($stmt->execute()) {
+                // Redirect to login page
+                echo "<script>alert('Password Changed. Please login with new credentials');window.location.href='login.php';</script>";
+            } else {
+                echo "Something went wrong. Please try again later.";
+            }
+
+            // Close statement
+            unset($stmt);
+        }
+    }
+
     // Close connection
     unset($pdo);
-} else{
-    // URL doesn't contain id parameter. Redirect to error page
-    header("location: error.php");
-    exit();
+
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>User Profile</title>
+    <title>Cart</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://npmcdn.com/flickity@2/dist/flickity.pkgd.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <style type="text/css">
-        body {
+
+    <!-- Mobile specific meta -->
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone-no">
+    <style>
+        #navbar {
+            width: 100%;
+            margin-top: 30px;
+            margin-left: 30px;
+            display: block;
+            transition: top 0.3s;
+        }
+
+        #navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        footer {
+            position: static;
+            bottom: 0;
+            width: 100%;
+            color: lightblue;
+            text-align: center;
+        }
+
+
+        footer {
             background: url('images/uploads/ft-bg.jpg') no-repeat;
+            background-position: center;
+
+        }
+
+        body {
             font: 14px sans-serif;
+            background: url('images/uploads/ft-bg.jpg') no-repeat;
+            background-color: black;
         }
 
         section {
@@ -75,19 +128,6 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
             padding: 20px;
         }
 
-        footer {
-            position: static;
-            bottom: 0;
-            width: 100%;
-            color: lightblue;
-            text-align: center;
-        }
-
-        footer {
-            background: url('images/uploads/ft-bg.jpg') no-repeat;
-            background-position: center;
-        }
-
         h2 {
             color: gold;
         }
@@ -98,7 +138,9 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
 
         p {
             color: white;
+            display: inline;
         }
+
     </style>
 </head>
 
@@ -134,29 +176,26 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
     </header>
     <!-- END | Header -->
 
-    <section class="item">
+    <section clas="item">
         <div class="wrapper">
-            <h2>User Profile</h2>
-            <p>View or update profile</p>
-            <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-            <div class="form-group">
-                        <label>Name</label>
-                        <p class="form-control-static"><?php echo $row["name"]; ?></p>
+            <h2>Hi, <?php echo $_SESSION['username'] ?> </h2>          
+            <form action="password.php" method="post">
+                    <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+                        <label>New Password</label>
+                        <input type="password" name="password" class="form-control" value="" required>
+                        <span class="help-block"><?php echo $password_err; ?></span>
                     </div>
-                    <div class="form-group">
-                        <label>Address</label>
-                        <p class="form-control-static"><?php echo $row["address"]; ?></p>
+                    <div class="form-group <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
+                        <label>Confirm Password</label>
+                        <input type="password" name="confirm_password" class="form-control" value="" required>
+                        <span class="help-block"><?php echo $confirm_password_err; ?></span>
                     </div>
-                    <div class="form-group">
-                        <label>Salary</label>
-                        <p class="form-control-static"><?php echo $row["salary"]; ?></p>
-                    </div>
-                    <p><a href="index.php" class="btn btn-primary">Back</a>
-                    <a href="update.php" class="btn btn-primary">Update</a></p>
+                    <input type="submit" class="btn btn-primary" value="Submit">
             </form>
         </div>
     </section>
 
+    <!-- footer section-->
     <footer id="footer">
         <div class="container fluid text-center text-md-left ">
             <div class="row">
@@ -211,6 +250,7 @@ if(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
             </div>
         </div>
     </footer>
+    <!-- end of footer section-->
 </body>
 
 </html>

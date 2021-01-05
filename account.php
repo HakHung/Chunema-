@@ -1,7 +1,92 @@
 <?php
+
 session_start();
 
-require_once ('config.php');
+// Include config file
+require_once "config.php";
+
+// Define variables and initialize with empty values
+$username =  $opassword = $password = $confirm_password = $email = $gender = $phone = $complete = "";
+$username_err = $opassword_err = $password_err = $confirm_password_err = $email_err = $gender_err = $phone_err = "";
+$name = $_SESSION['username'];
+$userid = $_SESSION['id'];
+
+
+
+$stmt = $pdo->prepare("SELECT * FROM userdetails WHERE username='$name'");
+$stmt->execute();
+$row = $stmt->fetch();
+
+$gender = $row['gender'];
+$phone = $row['phone'];
+
+if (empty($row['gender']) || empty($row['phone'])) {
+    $complete = "Please complete your profile";
+} else {
+    $complete = "Anything to update?";
+}
+
+// Processing form data when form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Validate username
+    if (empty(trim($_POST["username"]))) {
+        $username_err = "Please enter a username.";
+    } else
+        $username = trim($_POST["username"]);
+
+    if (empty(trim($_POST["email"]))) {
+        $email_err = "Please enter an email.";
+    } else
+        $email = trim($_POST["email"]);
+
+    if (empty($_POST["gender"])) {
+        $gender_err = "Please select your gender";
+    } else
+        $gender = trim($_POST["gender"]);
+
+    if (empty($_POST["phone"])) {
+        $phone_err = "Please enter your phone number";
+    } else
+        $phone = trim($_POST["phone"]);
+
+    
+    // Check input errors before inserting in database
+    if (empty($username_err) && empty($email_err) && empty($gender_err) && empty($phone_err)) {
+        // Prepare an update statement
+        $sql = "UPDATE userdetails SET username=:username, email=:email, gender=:gender, phone=:phone WHERE id='$userid'";
+
+        if ($stmt = $pdo->prepare($sql)) {
+            // Bind variables to the prepared statement as parameters
+            $stmt->bindParam(":username", $param_username, PDO::PARAM_STR);
+            $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
+            $stmt->bindParam(":phone", $param_phone, PDO::PARAM_STR);
+            $stmt->bindParam(":gender", $param_gender, PDO::PARAM_STR);
+
+            // Set parameters
+            $param_username = $username;
+            $param_email = $email;
+            $param_gender = $gender;
+            $param_phone = $phone;
+
+            // Attempt to execute the prepared statement
+            if ($stmt->execute()) {
+                // Redirect to login page
+                $_SESSION['username'] = $username;
+                $_SESSION['email'] = $email;
+                echo "<script>alert('Profile updated');window.location.href='account.php';</script>";
+            } else {
+                echo "Something went wrong. Please try again later.";
+            }
+
+            // Close statement
+            unset($stmt);
+        }
+    }
+
+    // Close connection
+    unset($pdo);
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,17 +94,49 @@ require_once ('config.php');
 
 <head>
     <meta charset="UTF-8">
-    <title>User Profile</title>
+    <title>Cart</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://npmcdn.com/flickity@2/dist/flickity.pkgd.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <style type="text/css">
-        body {
+
+    <!-- Mobile specific meta -->
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone-no">
+    <style>
+        #navbar {
+            width: 100%;
+            margin-top: 30px;
+            margin-left: 30px;
+            display: block;
+            transition: top 0.3s;
+        }
+
+        #navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        footer {
+            position: static;
+            bottom: 0;
+            width: 100%;
+            color: lightblue;
+            text-align: center;
+        }
+
+
+        footer {
             background: url('images/uploads/ft-bg.jpg') no-repeat;
+            background-position: center;
+
+        }
+
+        body {
             font: 14px sans-serif;
-            height:50%;
+            background: url('images/uploads/ft-bg.jpg') no-repeat;
+            background-color: black;
         }
 
         section {
@@ -32,22 +149,8 @@ require_once ('config.php');
             padding: 20px;
         }
 
-        footer {
-            position: static;
-            bottom: 0;
-            width: 100%;
-            color: lightblue;
-            text-align: center;
-        }
-
-        footer {
-            background: url('images/uploads/ft-bg.jpg') no-repeat;
-            background-position: center;
-        }
-
         h2 {
             color: gold;
-
         }
 
         label {
@@ -56,7 +159,9 @@ require_once ('config.php');
 
         p {
             color: white;
+            display: inline;
         }
+
     </style>
 </head>
 
@@ -92,61 +197,45 @@ require_once ('config.php');
     </header>
     <!-- END | Header -->
 
-     <section class="item">
+    <section clas="item">
         <div class="wrapper">
-        <h2>User Profile</h2>
-        <p>View or update profile</p>
-                    </div>
-                    <?php
-                    // Include config file
-                    require_once "config.php";
-                    
-                    // Attempt select query execution
-                    $sql = "SELECT * FROM userdetails";
-                    if($result = $pdo->query($sql)){
-                        if($result->rowCount() > 0){
-                            echo "<table class='table table-bordered font'>";
-                                echo "<thead>";
-                                    echo "<tr>";
-                                        echo "<th><font color=gold>Name</th>";
-                                        echo "<th><font color=gold>Email</th>";
-                                        echo "<th><font color=gold>Country</th>";
-                                        echo "<th><font color=gold>Phone</th>";
-                                        echo "<th><font color=gold>Password</th>";
-                                        echo "<th><font color=gold>Option</th>";
-                                    echo "</tr>";
-                                echo "</thead>";
-                                echo "<tbody>";
-                                while($row = $result->fetch()){
-                                    echo "<tr>";
-                                        echo "<td><font color=white>" . $row['username'] . "</td>";
-                                        echo "<td><font color=white>" . $row['email'] . "</td>";
-                                        echo "<td><font color=white>" . $row['country'] . "</td>";
-                                        echo "<td><font color=white>" . $row['phone'] . "</td>";
-                                        echo "<td><font color=white>" . $row['pasword'] . "</td>";
-                                        echo "<td>";
-                                            echo "<a href='read.php?id=". $row['id'] ."'class='btn btn-default''>View</a>";
-                                            echo "<a href='update.php?id=". $row['id'] ."'class='btn btn-primary''>Update</a>";
-                                        echo "</td>";
-                                    echo "</tr>";
-                                }
-                                echo "</tbody>";                            
-                            echo "</table>";
-                            // Free result set
-                            unset($result);
-                        } else{
-                            echo "<p class='lead'><em>No records were found.</em></p>";
-                        }
-                    } else{
-                        echo "ERROR: Could not able to execute $sql. " . $mysqli->error;
-                    }
-                    
-                    // Close connection
-                    unset($pdo);
-                    ?>
+            <h2>Hi, <?php echo $_SESSION['username'] ?> </h2>
+            <p><?php echo $complete ?></p>
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control" required value="<?php echo $_SESSION['username'] ?>">
+                    <span class="help-block"><?php echo $username_err; ?></span>
+                </div>
+                <div class="form-group <?php echo (!empty($email_err)) ? 'has-error' : ''; ?>">
+                    <label>Email Address</label>
+                    <input type="email" name="email" class="form-control" required value="<?php echo $_SESSION['email'] ?>">
+                    <span class="help-block"><?php echo $email_err; ?></span>
+                </div>
+
+                <div class="form-group <?php echo (!empty($gender_err)) ? 'has-error' : ''; ?>">
+                    <label>Gender</label><br>
+                    <input type="radio" name="gender" <?php if (isset($gender) && $gender == "female") echo "checked"; ?> value="female">
+                    <p> Female</p>
+                    <input type="radio" name="gender" <?php if (isset($gender) && $gender == "male") echo "checked"; ?> value="male">
+                    <p> Male</p>
+                    <span class="help-block"><?php echo $gender_err; ?></span>
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="text" name="phone" class="form-control" required value="<?php echo $phone ?>">
+                    <span class="help-block"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Submit">
+                </div>
+            </form>
+            <button><a href="password.php">Change Password</a></button>
         </div>
     </section>
 
+    <!-- footer section-->
     <footer id="footer">
         <div class="container fluid text-center text-md-left ">
             <div class="row">
@@ -201,4 +290,8 @@ require_once ('config.php');
             </div>
         </div>
     </footer>
+    <!-- end of footer section-->
+
 </body>
+
+</html>

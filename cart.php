@@ -4,14 +4,9 @@ session_start();
 
 require_once "config.php";
 
-
 $userid = $_SESSION['id'];
 
-
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -85,9 +80,6 @@ $userid = $_SESSION['id'];
             padding:50px;
             justify-content: center;
         }
-
-
-
 
         #movie-table {
             width: 80%;
