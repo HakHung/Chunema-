@@ -73,10 +73,6 @@ require_once "config.php";
             }
         }
 
-        /* #navbar .dropdown {
-            display: none;
-        } */
-
         footer {
             background: url('images/uploads/ft-bg.jpg') no-repeat;
             background-position: center;
@@ -328,7 +324,6 @@ https://flickity.metafizzy.co
     <header class="header">
         <nav id="navbar" class="navbar navbar-dark bg-transparent">
             <div class="container-fluid">
-                <!-- <div class="navbar-header"> -->
                 <a name="top" href="dashboard.php"><img class="logo" src="images/logo1.png" alt="Chunema" width="200" height="90"></a>
                 <!-- </div> -->
 

@@ -67,6 +67,22 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             color: white;
             padding-bottom: 10px;
         }
+
+        @media screen and (max-width: 600px) {
+            #navbar {
+                width: 30%;
+            }
+
+            .container {
+                text-align: left;
+            }
+        }
+
+        @media screen and (max-width: 1000px) {
+            .container {
+                text-align: left;
+            }
+        }
     </style>
 </head>
 
