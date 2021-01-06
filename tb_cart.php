@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 </div>
                 <div class="form-group">
                     <button>Proceed to payment</button>
-                    <button>Cancel</button>   
+                    <button ><a href="dashboard.php">Cancel</a></button>   
                 </div>
             </form>     
     </section>
@@ -237,6 +237,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
         echo "<tr ><td></td><td></td></tr></table>";
         ?><br> -->
+
+        <script type="text/javascript">
+        "use strict"
+            document.getElementById("clc").onclick = function () {
+                location.href = "dashboard.php";
+            };
+        </script>
 </body>
 
 </html>
