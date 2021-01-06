@@ -76,8 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
           $param_payment_id = $payment_id;
 
           if ($stmt_1->execute()) {
-            header("location: dashboard.php");
-            echo "Result updated";
+            echo "<script>alert('Transaction Completed');window.location.href='dashboard.php';</script>";
           } else {
             echo "Something went wrong. Please try again later.";
           }
