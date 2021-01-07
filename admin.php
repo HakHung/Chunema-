@@ -160,8 +160,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         //close connection
         unset($pdo);
-    } else {
-        echo "Something Wrong";
     }
 }
 ?>

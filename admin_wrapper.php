@@ -1,3 +1,7 @@
+<?php
+session_start();
+require_once "config.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,20 +42,18 @@
     </div>
 
     <div class="tab-content">
-
-
         <div id="add-movie" class="tab-pane fade in active">
             <?php
             require "admin.php";
             ?>
         </div>
 
-
         <div id="remove-movie" class="tab-pane fade">
             <?php
             require "remove_movie.php";
             ?>
         </div>
+
         <div id="screening-time" class="tab-pane fade">
             <?php
             require "screening.php";

@@ -67,26 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <title>Admin Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <style type="text/css">
-
-        .wrapper {
-            width: 100%;
-            padding-left: 20px;
-        }
-
-        .head-title {
-            text-align: center;
-        }
-
-        .head-title h2 {
-            color: white;
-            padding-top: 10px;
-        }
-
-        .head-title p {
-            color: white;
-            padding-bottom: 10px;
-        }
-
+     
         .form-group label,
         span {
             color: white;
@@ -115,9 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </div>
         <div class="wrapper">
 
-            <form method="post">
-
-
+            <form action="screening.php" method="post">
                 <div>
                     <h1>Movie</h1>
                     <div class="form-group <?php echo (!empty($name_err)) ? 'has-error' : ''; ?>">
@@ -155,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <h1>Showtime</h1>
                 <div class="form-group <?php echo (!empty($stime_err)) ? 'has-error' : ''; ?>">
                     <label for="sel1">Select Time:</label>
-                    <input type="time" id="appt" name="showtime">
+                    <input type="time" id="showtime" name="showtime">
                     <span class="help-block"><?php echo $stime_err; ?></span>
                 </div>
 

@@ -54,10 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
       $stmt->execute();
       $row = $stmt->fetch();
       array_push($seat_id_list, $row['seat_id']);
-      
         
-       
-      
     }
     $sql_1 = "INSERT INTO seat_reserved(seat_id, screening_id,screening_date, payment_id) 
     VALUES ( :seat_id , :screening_id,:screening_date, :payment_id)";
