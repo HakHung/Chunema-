@@ -11,8 +11,7 @@ $username_err = $opassword_err = $password_err = $confirm_password_err = $email_
 $name = $_SESSION['username'];
 $userid = $_SESSION['id'];
 
-
-
+//check user profile completeness
 $stmt = $pdo->prepare("SELECT * FROM userdetails WHERE username='$name'");
 $stmt->execute();
 $row = $stmt->fetch();
@@ -100,6 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 
     <!-- Mobile specific meta -->
     <meta name=viewport content="width=device-width, initial-scale=1">
@@ -296,18 +296,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <form action="#">
                         <input type="text" placeholder="Enter your email...">
                     </form>
-                    <a href="#" class="btn">Subscribe now <i class="ion-ios-arrow-forward"></i></a>
+                    <a href="#" class="btn">Subscribe now </a>
                 </div>
             </div>
         </div>
         <div>
             <div class="backtotop">
-                <p><a href="#top" id="back-to-top">Back to top <i class="ion-ios-arrow-thin-up"></i></a></p>
+                <a href="#top" id="back-to-top">Back to top </a>
             </div>
         </div>
     </footer>
     <!-- end of footer section-->
 
 </body>
-
 </html>

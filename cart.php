@@ -286,13 +286,13 @@ $userid = $_SESSION['id'];
                     <form action="#">
                         <input type="text" placeholder="Enter your email...">
                     </form>
-                    <a href="#" class="btn">Subscribe now <i class="ion-ios-arrow-forward"></i></a>
+                    <a href="#" class="btn">Subscribe now </a>
                 </div>
             </div>
         </div>
         <div>
             <div class="backtotop">
-                <p><a href="#top" id="back-to-top">Back to top <i class="ion-ios-arrow-thin-up"></i></a></p>
+                <a href="#top" id="back-to-top">Back to top </a>
             </div>
         </div>
     </footer>

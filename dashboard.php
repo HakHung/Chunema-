@@ -24,6 +24,7 @@ require_once "config.php";
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://npmcdn.com/flickity@2/dist/flickity.pkgd.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
 
     <!-- Mobile specific meta -->
     <meta name=viewport content="width=device-width, initial-scale=1">
@@ -272,11 +273,12 @@ https://flickity.metafizzy.co
             transform: translate(-50%, -50%);
         }
 
-        .text{
+        .text {
             opacity: 0;
             transition: all 0.3s;
         }
 
+        /* hover button */
         .inner1 a:hover,
         .inner2 a:hover {
             width: 75px;
@@ -290,6 +292,7 @@ https://flickity.metafizzy.co
         }
     </style>
     <script>
+        //function for carousel
         $(document).ready(function() {
             var $imagesCarousel = $('.carouselOfImages').flickity({
                 contain: true,
@@ -349,32 +352,32 @@ https://flickity.metafizzy.co
         </nav>
     </header>
     <!-- END | Header -->
-    <div>
-        <section class="items">
-            <div class="carouselOfImages">
-                <?php
-                //counter to control loop through the movielist and print in carousel
-                $counter = 1;
-                $stmt = $pdo->prepare("SELECT * FROM movielist");
-                $stmt->execute();
-                while ($row = $stmt->fetch()) {
-                ?>
-                    <div class="carouselImage" style="background-size:cover;">
-                        <img src=<?php echo $row['path']; ?> >
-                        <div class="inner1">
-                            <a class="text" href="single.php ? myid= <?php echo $row['movieid']; ?>"> Read more</a>
-                        </div>
-                        <div class="inner2">
-                            <a class="text" href="ticket.php ? myid= <?php echo $row['movieid']; ?>"> Book Now!</a>
-                        </div>
+
+    <section class="items">
+        <div class="carouselOfImages">
+            <?php
+            //counter to control loop through the movielist and print in carousel
+            $counter = 1;
+            $stmt = $pdo->prepare("SELECT * FROM movielist");
+            $stmt->execute();
+            while ($row = $stmt->fetch()) {
+            ?>
+                <div class="carouselImage" style="background-size:cover;">
+                    <img src=<?php echo $row['path']; ?>>
+                    <div class="inner1">
+                        <a class="text" href="single.php ? myid= <?php echo $row['movieid']; ?>"> Read more</a>
                     </div>
-                <?php
-                    $counter++;
-                }
-                ?>
-            </div>
-        </section>
-    </div>
+                    <div class="inner2">
+                        <a class="text" href="ticket.php ? myid= <?php echo $row['movieid']; ?>"> Book Now!</a>
+                    </div>
+                </div>
+            <?php
+                $counter++;
+            }
+            ?>
+        </div>
+    </section>
+
     <!-- footer section-->
     <footer id="footer">
         <div class="container fluid text-center text-md-left ">
@@ -420,13 +423,13 @@ https://flickity.metafizzy.co
                     <form action="#">
                         <input type="text" placeholder="Enter your email...">
                     </form>
-                    <a href="#" class="btn">Subscribe now <i class="ion-ios-arrow-forward"></i></a>
+                    <a href="#" class="btn">Subscribe now </a>
                 </div>
             </div>
         </div>
         <div>
             <div class="backtotop">
-                <p><a href="#top" id="back-to-top">Back to top <i class="ion-ios-arrow-thin-up"></i></a></p>
+                <a href="#top" id="back-to-top">Back to top </a>
             </div>
         </div>
     </footer>
